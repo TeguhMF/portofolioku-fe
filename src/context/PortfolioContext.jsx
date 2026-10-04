@@ -1,8 +1,11 @@
 import { createContext, useContext, useState } from 'react';
 
-const PortfolioContext = createContext();
+// 1. Inisialisasi Context
+const PortfolioContext = createContext(null);
 
+// 2. Component Provider
 export const PortfolioProvider = ({ children }) => {
+  // State Utama Portofolio Siswa
   const [portfolioData, setPortfolioData] = useState({
     profile: {
       name: 'Muhammad Fajar',
@@ -56,7 +59,7 @@ export const PortfolioProvider = ({ children }) => {
     ],
   });
 
-  // Fungsi helper untuk merubah bagian tertentu dari state
+  // Fungsi untuk memperbarui data profil secara real-time
   const updateProfile = (newProfile) => {
     setPortfolioData((prev) => ({
       ...prev,
@@ -64,6 +67,7 @@ export const PortfolioProvider = ({ children }) => {
     }));
   };
 
+  // Fungsi penambahan data prestasi
   const addAchievement = (item) => {
     setPortfolioData((prev) => ({
       ...prev,
@@ -71,6 +75,7 @@ export const PortfolioProvider = ({ children }) => {
     }));
   };
 
+  // Fungsi penghapusan data prestasi
   const removeAchievement = (id) => {
     setPortfolioData((prev) => ({
       ...prev,
@@ -92,4 +97,12 @@ export const PortfolioProvider = ({ children }) => {
   );
 };
 
-export const usePortfolio = () => useContext(PortfolioContext);
+// 3. Custom Hook dengan ESLint Disable Comment & Safety Check
+/* eslint-disable-next-line react-refresh/only-export-components */
+export const usePortfolio = () => {
+  const context = useContext(PortfolioContext);
+  if (!context) {
+    throw new Error('usePortfolio harus digunakan di dalam <PortfolioProvider>');
+  }
+  return context;
+};
