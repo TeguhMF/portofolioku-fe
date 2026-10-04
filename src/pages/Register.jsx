@@ -1,0 +1,163 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { GraduationCap, Mail, Lock, User, School } from 'lucide-react';
+
+const Register = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    username: '',
+    school_name: '',
+    email: '',
+    password: ''
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem('auth_token', 'dummy_token_12345');
+    navigate('/dashboard');
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 font-sans selection:bg-blue-500 selection:text-white">
+      {/* Outer Card Container */}
+      <div className="w-full max-w-4xl h-auto sm:h-[550px] bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/80 flex flex-col sm:flex-row">
+        
+        {/* Panel Kiri (Biru Gradient) */}
+        <div className="w-full sm:w-1/2 bg-gradient-to-br from-blue-600 to-blue-700 text-white p-8 sm:p-12 flex flex-col justify-between relative overflow-hidden">
+          {/* Logo */}
+          <div className="flex items-center gap-2 relative z-10">
+            <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-md flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 text-white" />
+            </div>
+            <span className="font-bold text-lg tracking-wide text-white">Portofolioku</span>
+          </div>
+
+          {/* Text Content */}
+          <div className="my-8 sm:my-auto space-y-4 relative z-10">
+            <h1 className="text-3xl font-extrabold leading-tight">Welcome Back!</h1>
+            <div className="w-12 h-1 bg-white/60 rounded-full"></div>
+            <p className="text-xs text-blue-100 leading-relaxed max-w-xs">
+              Untuk tetap terhubung dengan rekam jejak portofoliomu, silakan login dengan akun yang sudah terdaftar.
+            </p>
+            <Link 
+              to="/login"
+              className="inline-block mt-4 px-6 py-2.5 border-2 border-white text-white font-bold text-xs rounded-full hover:bg-white hover:text-blue-600 transition-all transform hover:scale-105"
+            >
+              SIGN IN
+            </Link>
+          </div>
+
+          <p className="text-[10px] text-blue-200 relative z-10">© Portofolioku Student Portal</p>
+
+          {/* Bulatan Dekoratif Putih */}
+          <div className="absolute -bottom-10 -left-10 w-36 h-36 border-8 border-white/20 rounded-full pointer-events-none"></div>
+          <div className="absolute top-1/2 -right-12 -translate-y-1/2 w-24 h-24 bg-white rounded-full pointer-events-none hidden sm:block"></div>
+        </div>
+
+        {/* Panel Kanan (Form Register) */}
+        <div className="w-full sm:w-1/2 p-8 sm:p-10 flex flex-col justify-center bg-white relative">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="text-center sm:text-left mb-2">
+              <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Daftar Akun</h2>
+              <div className="w-8 h-1 bg-blue-600 rounded-full mt-1 mx-auto sm:mx-0"></div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-600 mb-1">Nama Lengkap</label>
+              <div className="relative">
+                <User className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                <input 
+                  type="text" 
+                  required 
+                  placeholder="Muhammad Fajar"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full pl-9 pr-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">Username</label>
+                <input 
+                  type="text" 
+                  required 
+                  placeholder="fajar12"
+                  value={formData.username}
+                  onChange={(e) => setFormData({...formData, username: e.target.value})}
+                  className="w-full px-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">Nama Sekolah</label>
+                <div className="relative">
+                  <School className="w-4 h-4 absolute left-2 top-2.5 text-slate-400" />
+                  <input 
+                    type="text" 
+                    required 
+                    placeholder="SMAN 1 Jakarta"
+                    value={formData.school_name}
+                    onChange={(e) => setFormData({...formData, school_name: e.target.value})}
+                    className="w-full pl-8 pr-2 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-600 mb-1">Email</label>
+              <div className="relative">
+                <Mail className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                <input 
+                  type="email" 
+                  required 
+                  placeholder="fajar@gmail.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="w-full pl-9 pr-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-600 mb-1">Password</label>
+              <div className="relative">
+                <Lock className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                <input 
+                  type="password" 
+                  required 
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                  className="w-full pl-9 pr-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
+                />
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              className="w-full py-3 mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-full shadow-lg shadow-blue-500/30 transition-all transform active:scale-95 cursor-pointer"
+            >
+              REGISTER
+            </button>
+
+            <p className="text-center text-[11px] text-slate-500 sm:hidden pt-2">
+              Sudah punya akun?{' '}
+              <Link to="/login" className="text-blue-600 font-bold underline">
+                Sign In
+              </Link>
+            </p>
+          </form>
+
+          {/* Bulatan Dekoratif Kanan */}
+          <div className="absolute top-1/2 -right-10 -translate-y-1/2 w-28 h-28 border-8 border-slate-100 rounded-full pointer-events-none hidden sm:block"></div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default Register;
