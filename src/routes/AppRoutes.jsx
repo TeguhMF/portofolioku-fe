@@ -1,14 +1,17 @@
-/*dikaa*/
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import LandingPage from '../pages/LandingPage';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import DashboardLayout from '../layouts/DashboardLayout';
-import DashboardContainer from '../pages/dashboard/DashboardContainer';
-import ProfileTab from '../pages/dashboard/ProfileTab';
-
-const PublicPortfolio = () => <div className="p-8 text-2xl font-bold">Halaman Portofolio Publik (/p/:username)</div>;
+import DashboardContainer from '../pages/Dashboard/DashboardContainer';
+import ProfileTab from '../pages/Dashboard/ProfileTab';
+import OrganizationsTab from '../pages/dashboard/OrganizationsTab';
+import AchievementsTab from '../pages/Dashboard/AchievementsTab';
+import ProjectsTab from '../pages/dashboard/ProjectsTab';
+import SkillsTab from '../pages/dashboard/SkillsTab';
+import TemplatesTab from '../pages/dashboard/TemplatesTab';
+import PublicPortfolio from '../pages/PublicPortfolio';
 
 const AppRoutes = () => {
   return (
@@ -28,15 +31,15 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        {/* Sub-routes di dalam Split View Container */}
+        {/* Split View Container & Form Tabs */}
         <Route element={<DashboardContainer />}>
           <Route index element={<ProfileTab />} />
           <Route path="profile" element={<ProfileTab />} />
-          <Route path="organizations" element={<div className="p-6 bg-white rounded-2xl border">Form Organisasi (Next)</div>} />
-          <Route path="achievements" element={<div className="p-6 bg-white rounded-2xl border">Form Prestasi (Next)</div>} />
-          <Route path="projects" element={<div className="p-6 bg-white rounded-2xl border">Form Karya (Next)</div>} />
-          <Route path="skills" element={<div className="p-6 bg-white rounded-2xl border">Form Skill (Next)</div>} />
-          <Route path="templates" element={<div className="p-6 bg-white rounded-2xl border">Pilih Template (Next)</div>} />
+          <Route path="organizations" element={<OrganizationsTab />} />
+          <Route path="achievements" element={<AchievementsTab />} />
+          <Route path="projects" element={<ProjectsTab />} />
+          <Route path="skills" element={<SkillsTab />} />
+          <Route path="templates" element={<TemplatesTab />} />
         </Route>
       </Route>
     </Routes>
