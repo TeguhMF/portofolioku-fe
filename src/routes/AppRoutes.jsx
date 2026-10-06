@@ -6,11 +6,10 @@ import Register from '../pages/Register';
 import DashboardLayout from '../layouts/DashboardLayout';
 import DashboardContainer from '../pages/Dashboard/DashboardContainer';
 import ProfileTab from '../pages/Dashboard/ProfileTab';
-import OrganizationsTab from '../pages/dashboard/OrganizationsTab';
+import OrganizationsTab from '../pages/Dashboard/OrganizationsTab';
 import AchievementsTab from '../pages/Dashboard/AchievementsTab';
-import ProjectsTab from '../pages/dashboard/ProjectsTab';
-import SkillsTab from '../pages/dashboard/SkillsTab';
-import TemplatesTab from '../pages/dashboard/TemplatesTab';
+import ProjectsTab from '../pages/Dashboard/ProjectsTab';
+import SkillsTab from '../pages/Dashboard/SkillsTab';
 import PublicPortfolio from '../pages/PublicPortfolio';
 
 const AppRoutes = () => {
@@ -31,7 +30,6 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        {/* Split View Container & Form Tabs */}
         <Route element={<DashboardContainer />}>
           <Route index element={<ProfileTab />} />
           <Route path="profile" element={<ProfileTab />} />
@@ -39,7 +37,6 @@ const AppRoutes = () => {
           <Route path="achievements" element={<AchievementsTab />} />
           <Route path="projects" element={<ProjectsTab />} />
           <Route path="skills" element={<SkillsTab />} />
-          <Route path="templates" element={<TemplatesTab />} />
         </Route>
       </Route>
     </Routes>

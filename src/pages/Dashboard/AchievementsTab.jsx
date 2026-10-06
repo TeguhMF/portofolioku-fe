@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { Award, Plus, Trash2 } from 'lucide-react';
+import { Award, Plus, Trash2, FileCheck } from 'lucide-react';
 
 const AchievementsTab = () => {
   const { portfolioData, addAchievement, removeAchievement } = usePortfolio();
@@ -12,23 +12,31 @@ const AchievementsTab = () => {
     level: 'nasional',
     year: '2026',
     description: '',
+    certificate_url: '',
   });
+
+  const handleCertificateUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setForm({ ...form, certificate_url: previewUrl });
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.title) return;
     addAchievement(form);
-    setForm({ title: '', rank: 'Juara 1', level: 'nasional', year: '2026', description: '' });
+    setForm({ title: '', rank: 'Juara 1', level: 'nasional', year: '2026', description: '', certificate_url: '' });
   };
 
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 font-sans">
       <div className="flex items-center gap-2 pb-4 border-b border-slate-100">
         <Award className="w-5 h-5 text-amber-600" />
         <h2 className="text-base font-bold text-slate-800">Kelola Prestasi & Sertifikat</h2>
       </div>
 
-      {/* Form Tambah Prestasi */}
       <form onSubmit={handleSubmit} className="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200/80">
         <h3 className="text-xs font-bold text-slate-700">Tambah Prestasi Baru</h3>
         
@@ -82,6 +90,20 @@ const AchievementsTab = () => {
           </div>
         </div>
 
+        <div>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Foto Sertifikat (Optional)</label>
+          <div className="flex items-center gap-3">
+            <label className="inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer hover:bg-slate-100 transition-colors">
+              <FileCheck className="w-4 h-4 text-emerald-600" />
+              <span>{form.certificate_url ? 'Ganti Sertifikat' : 'Upload Berkas'}</span>
+              <input type="file" accept="image/*" onChange={handleCertificateUpload} className="hidden" />
+            </label>
+            {form.certificate_url && (
+              <span className="text-[11px] text-emerald-600 font-bold">✓ Berkas Siap</span>
+            )}
+          </div>
+        </div>
+
         <button
           type="submit"
           className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
@@ -91,7 +113,6 @@ const AchievementsTab = () => {
         </button>
       </form>
 
-      {/* Daftar Prestasi Terdaftar */}
       <div className="space-y-3">
         <h3 className="text-xs font-bold text-slate-700">Daftar Prestasi</h3>
         {achievements.length === 0 ? (
@@ -99,11 +120,16 @@ const AchievementsTab = () => {
         ) : (
           achievements.map((item) => (
             <div key={item.id} className="flex justify-between items-center p-3 rounded-xl border border-slate-200 bg-white">
-              <div>
-                <h4 className="text-xs font-bold text-slate-800">{item.title}</h4>
-                <p className="text-[10px] text-slate-500">
-                  {item.rank} • Tingkat {item.level} ({item.year})
-                </p>
+              <div className="flex items-center gap-3">
+                {item.certificate_url && (
+                  <img src={item.certificate_url} alt="Sertifikat" className="w-10 h-10 object-cover rounded-lg border border-slate-200" />
+                )}
+                <div>
+                  <h4 className="text-xs font-bold text-slate-800">{item.title}</h4>
+                  <p className="text-[10px] text-slate-500">
+                    {item.rank} • Tingkat {item.level} ({item.year})
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => removeAchievement(item.id)}

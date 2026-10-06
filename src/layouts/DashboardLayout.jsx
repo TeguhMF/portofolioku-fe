@@ -7,8 +7,7 @@ import {
   Award, 
   Briefcase, 
   FolderGit2, 
-  Sparkles, 
-  Palette, 
+  Sparkles,  
   ExternalLink, 
   LogOut, 
   Menu, 
@@ -41,7 +40,6 @@ const DashboardLayout = () => {
     { name: 'Prestasi & Sertifikat', path: '/dashboard/achievements', icon: Award },
     { name: 'Karya & Project', path: '/dashboard/projects', icon: FolderGit2 },
     { name: 'Keahlian & Cita-cita', path: '/dashboard/skills', icon: Sparkles },
-    { name: 'Pilih Template', path: '/dashboard/templates', icon: Palette },
   ];
 
   return (
