@@ -75,6 +75,7 @@ const ProfileTab = () => {
               name="username"
               value={profile.username || ''}
               onChange={handleChange}
+              placeholder='portofolioku.com/p/fajar-12'
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-slate-50"
             />
           </div>
@@ -88,6 +89,7 @@ const ProfileTab = () => {
               name="school_name"
               value={profile.school_name || ''}
               onChange={handleChange}
+              placeholder="MAN 5 BOGOR"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
@@ -98,19 +100,20 @@ const ProfileTab = () => {
               name="career_goal"
               value={profile.career_goal || ''}
               onChange={handleChange}
-              placeholder="Contoh: Software Engineer / UI Designer"
+              placeholder="Contoh: Dokter, Guru, Atlet, atau Programmer"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-600 mb-1">Bio Ringkas</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Tentang Saya</label>
           <textarea
             name="bio"
             rows="3"
             value={profile.bio || ''}
             onChange={handleChange}
+            placeholder="Ceritakan secara singkat tentang dirimu, minat, atau hal yang ingin kamu capai."
             className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
           ></textarea>
         </div>
