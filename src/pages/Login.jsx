@@ -29,10 +29,10 @@ const Login = () => {
 
           {/* Text Content */}
           <div className="my-8 sm:my-auto space-y-4 relative z-10">
-            <h1 className="text-3xl font-extrabold leading-tight">Welcome to Portofolioku</h1>
+            <h1 className="text-3xl font-extrabold leading-tight">Selamat Datang di Portofolioku</h1>
             <div className="w-12 h-1 bg-white/60 rounded-full"></div>
             <p className="text-xs text-blue-100 leading-relaxed max-w-xs">
-              Mulai bangun portofolio digital SMA-mu sekarang. Tampilkan prestasi, OSIS, dan karya terbaikmu secara profesional.
+              Mulai bangun portofolio digitalmu sekarang. Tampilkan prestasi, kegiatan, dan karya terbaikmu.
             </p>
             <Link 
               to="/register"
@@ -42,7 +42,7 @@ const Login = () => {
             </Link>
           </div>
 
-          <p className="text-[10px] text-blue-200 relative z-10">© Portofolioku Student Portal</p>
+          <p className="text-[10px] text-blue-200 relative z-10"></p>
 
           {/* Bulatan Dekoratif Putih */}
           <div className="absolute -bottom-10 -left-10 w-36 h-36 border-8 border-white/20 rounded-full pointer-events-none"></div>
@@ -53,18 +53,18 @@ const Login = () => {
         <div className="w-full sm:w-1/2 p-8 sm:p-12 flex flex-col justify-center bg-white relative">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="text-center sm:text-left mb-4">
-              <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Sign In</h2>
+              <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Masuk</h2>
               <div className="w-8 h-1 bg-blue-600 rounded-full mt-1 mx-auto sm:mx-0"></div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Email / Username</label>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">Email / Nama Pengguna</label>
               <div className="relative">
                 <Mail className="w-4 h-4 absolute left-3 top-3.5 text-slate-400" />
                 <input 
                   type="email" 
                   required 
-                  placeholder="Enter Username or Email..."
+                  placeholder="Masukan Nama Pengguna atau Email..."
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   className="w-full pl-10 pr-4 py-2.5 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
@@ -73,13 +73,13 @@ const Login = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">Kata Sandi</label>
               <div className="relative">
                 <Lock className="w-4 h-4 absolute left-3 top-3.5 text-slate-400" />
                 <input 
                   type="password" 
                   required 
-                  placeholder="Enter Password..."
+                  placeholder="Masukan Kata Sandi..."
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
                   className="w-full pl-10 pr-4 py-2.5 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"

@@ -169,7 +169,7 @@ const DashboardLayout = () => {
               <Menu className="w-6 h-6" />
             </button>
             <h2 className="text-sm font-bold text-slate-800">
-              Dashboard Student Portal
+              Dashboard Portofolio Siswa
             </h2>
           </div>
 
@@ -180,7 +180,7 @@ const DashboardLayout = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors"
             >
-              <span>Preview Live</span>
+              <span>Lihat Portofolio</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>

@@ -132,7 +132,7 @@ const LandingPage = () => {
               </h1>
               
               <p className="text-base sm:text-lg text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                Rapi, profesional, dan siap digunakan untuk pendaftaran perguruan tinggi (SNBP/Beasiswa), melamar magang, hingga organisasi sekolah.
+                Catat perjalananmu selama sekolah, mulai dari prestasi, organisasi, pengalaman, hingga karya. Susun semuanya menjadi portofolio yang rapi dan siap dibagikan.
               </p>
               
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
@@ -246,7 +246,7 @@ const LandingPage = () => {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-xs font-bold uppercase tracking-wider text-blue-700 mb-2">Modul & Fitur Lengkap</h2>
             <p className="text-3xl font-bold text-slate-900 sm:text-4xl">
-              Segala Hal yang Dibutuhkan Siswa SMA Dalam Satu Tempat
+              Semua yang Dibutuhkan Siswa SMA dalam Satu Tempat
             </p>
           </div>
 
@@ -269,7 +269,7 @@ const LandingPage = () => {
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-3">Prestasi & Sertifikat</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Unggah bukti sertifikat kejuaraan tingkat Sekolah hingga Internasional dengan preview Lightbox yang jelas.
+                Unggah sertifikat prestasi tingkat sekolah hingga internasional dengan pratinjau yang jelas.
               </p>
             </div>
 
@@ -300,7 +300,7 @@ const LandingPage = () => {
               <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                 <Sparkles className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Skill & Career Path</h3>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Keterampilan & Rencana Karier</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
                 Tampilkan soft/hard skills dengan sistem chip tagging visual serta tuliskan cita-cita karir masa depanmu.
               </p>
@@ -311,9 +311,9 @@ const LandingPage = () => {
               <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-6 group-hover:bg-blue-700 group-hover:text-white transition-colors">
                 <ShieldCheck className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Instant Split View</h3>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Pratinjau Langsung</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Isi form di sebelah kiri dan langsung lihat tampilan portofolio publikmu ter-update secara real-time di kanan.
+                Isi formulir di sebelah kiri dan lihat perubahan portofoliomu secara langsung di sebelah kanan.
               </p>
             </div>
           </div>
@@ -403,7 +403,7 @@ const LandingPage = () => {
               <div className="w-14 h-14 rounded-2xl bg-blue-700 text-white text-xl font-bold flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-700/20">
                 1
               </div>
-              <h3 className="text-lg font-bold text-slate-800 mb-2">Daftar Akun Siswa</h3>
+              <h3 className="text-lg font-bold text-slate-800 mb-2">Buat Akun Siswa</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Buat akun gratis menggunakan email dan tentukan username portofolio unikmu.
               </p>
@@ -420,12 +420,12 @@ const LandingPage = () => {
             </div>
 
             <div className="text-center p-6">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-600 text-white text-xl font-bold flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-600/20">
+              <div className="w-14 h-14 rounded-2xl bg-blue-700 text-white text-xl font-bold flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-600/20">
                 3
               </div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">Pilih Template & Bagikan</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Pilih gaya tampilan favoritmu dan bagikan link `portofolioku.com/p/namamu` ke siapa saja!
+                Pilih tampilan favoritmu, lalu bagikan link portofoliomu.
               </p>
             </div>
           </div>

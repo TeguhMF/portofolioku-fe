@@ -44,7 +44,7 @@ const ProjectsTab = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Kategori</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Pilih Kategori</label>
             <select
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
@@ -53,17 +53,17 @@ const ProjectsTab = () => {
               <option value="teknologi">Teknologi</option>
               <option value="seni_desain">Seni & Desain</option>
               <option value="tulisan">Tulisan / Karya Ilmiah</option>
-              <option value="video">Video / Multi-media</option>
+              <option value="video">Video / Multimedia</option>
               <option value="lainnya">Lainnya</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-600 mb-1">Link Demo / Karya (Optional)</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Tautan Demo / Karya (Optional)</label>
           <input
             type="url"
-            placeholder="https://github.com/username/project"
+            placeholder="https://github.com/fajar/aplikasi-sekolah"
             value={form.project_url}
             onChange={(e) => setForm({ ...form, project_url: e.target.value })}
             className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white"

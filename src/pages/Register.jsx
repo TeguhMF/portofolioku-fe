@@ -35,20 +35,20 @@ const Register = () => {
 
           {/* Text Content */}
           <div className="my-8 sm:my-auto space-y-4 relative z-10">
-            <h1 className="text-3xl font-extrabold leading-tight">Welcome Back!</h1>
+            <h1 className="text-3xl font-extrabold leading-tight">Selamat Datang di Portofolioku</h1>
             <div className="w-12 h-1 bg-white/60 rounded-full"></div>
             <p className="text-xs text-blue-100 leading-relaxed max-w-xs">
-              Untuk tetap terhubung dengan rekam jejak portofoliomu, silakan login dengan akun yang sudah terdaftar.
+              Buat akun untuk mulai membangun dan membagikan portofoliomu.
             </p>
             <Link 
               to="/login"
               className="inline-block mt-4 px-6 py-2.5 border-2 border-white text-white font-bold text-xs rounded-full hover:bg-white hover:text-blue-600 transition-all transform hover:scale-105"
             >
-              SIGN IN
+              MASUK
             </Link>
           </div>
 
-          <p className="text-[10px] text-blue-200 relative z-10">© Portofolioku Student Portal</p>
+          <p className="text-[10px] text-blue-200 relative z-10"></p>
 
           {/* Bulatan Dekoratif Putih */}
           <div className="absolute -bottom-10 -left-10 w-36 h-36 border-8 border-white/20 rounded-full pointer-events-none"></div>
@@ -70,7 +70,7 @@ const Register = () => {
                 <input 
                   type="text" 
                   required 
-                  placeholder="Muhammad Fajar"
+                  placeholder="Masukan nama lengkap kamu"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="w-full pl-9 pr-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
@@ -80,11 +80,11 @@ const Register = () => {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">Username</label>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">Nama Pengguna</label>
                 <input 
                   type="text" 
                   required 
-                  placeholder="fajar12"
+                  placeholder="Masukan nama kamu"
                   value={formData.username}
                   onChange={(e) => setFormData({...formData, username: e.target.value})}
                   className="w-full px-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
@@ -97,7 +97,7 @@ const Register = () => {
                   <input 
                     type="text" 
                     required 
-                    placeholder="SMAN 1 Jakarta"
+                    placeholder="MAN 5 Bogor"
                     value={formData.school_name}
                     onChange={(e) => setFormData({...formData, school_name: e.target.value})}
                     className="w-full pl-8 pr-2 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
@@ -122,7 +122,7 @@ const Register = () => {
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-slate-600 mb-1">Password</label>
+              <label className="block text-[11px] font-semibold text-slate-600 mb-1">Kata Sandi</label>
               <div className="relative">
                 <Lock className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
                 <input 
@@ -140,7 +140,7 @@ const Register = () => {
               type="submit" 
               className="w-full py-3 mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-full shadow-lg shadow-blue-500/30 transition-all transform active:scale-95 cursor-pointer"
             >
-              REGISTER
+              DAFTAR
             </button>
 
             <p className="text-center text-[11px] text-slate-500 sm:hidden pt-2">

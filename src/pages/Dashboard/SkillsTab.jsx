@@ -30,7 +30,7 @@ const SkillsTab = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Skill / Minat</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Keahlian / Minat</label>
             <input
               type="text"
               required
@@ -42,14 +42,14 @@ const SkillsTab = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Kategori</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Pilih Jenis Keahlian</label>
             <select
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:outline-none bg-white"
             >
-              <option value="hard_skill">Hard Skill</option>
-              <option value="soft_skill">Soft Skill</option>
+              <option value="hard_skill">Keahlian Teknis (Hard Skill)</option>
+              <option value="soft_skill">Keahlian Nonteknis (Soft Skill)</option>
             </select>
           </div>
         </div>
@@ -59,7 +59,7 @@ const SkillsTab = () => {
           className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          <span>Tambah Skill</span>
+          <span>Tambah Keahlian</span>
         </button>
       </form>
 
