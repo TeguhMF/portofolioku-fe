@@ -70,7 +70,7 @@ const Register = () => {
                 <input 
                   type="text" 
                   required 
-                  placeholder="Masukan nama lengkap kamu"
+                  placeholder="Masukan nama lengkap"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="w-full pl-9 pr-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
@@ -84,7 +84,7 @@ const Register = () => {
                 <input 
                   type="text" 
                   required 
-                  placeholder="Masukan nama kamu"
+                  placeholder="Masukan nama"
                   value={formData.username}
                   onChange={(e) => setFormData({...formData, username: e.target.value})}
                   className="w-full px-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
@@ -113,7 +113,7 @@ const Register = () => {
                 <input 
                   type="email" 
                   required 
-                  placeholder="fajar@gmail.com"
+                  placeholder="teguh@gmail.com"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   className="w-full pl-9 pr-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"

@@ -43,7 +43,7 @@ const ProfileTab = () => {
               <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
               <span className="text-xl font-bold text-blue-600">
-                {profile.name ? profile.name.split(' ').map((n) => n[0]).join('') : 'S'}
+                {profile.name ? profile.name.split(' ').map((n) => n[0]).join('') : 'P'}
               </span>
             )}
           </div>
