@@ -37,9 +37,6 @@ const LandingPage = () => {
               <a href="#fitur" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
                 Fitur Unggulan
               </a>
-              <a href="#template" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
-                Pilihan Template
-              </a>
               <a href="#cara-kerja" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
                 Cara Kerja
               </a>
@@ -82,13 +79,6 @@ const LandingPage = () => {
               className="block px-3 py-2 text-base font-medium text-slate-600 hover:text-blue-700"
             >
               Fitur Unggulan
-            </a>
-            <a 
-              href="#template" 
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 text-base font-medium text-slate-600 hover:text-blue-700"
-            >
-              Pilihan Template
             </a>
             <a 
               href="#cara-kerja" 
@@ -143,12 +133,6 @@ const LandingPage = () => {
                   <span>Buat Portofolio Gratis</span>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
-                <a 
-                  href="#template" 
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors"
-                >
-                  <span>Lihat Contoh Template</span>
-                </a>
               </div>
 
               {/* Social Proof Checklist */}
@@ -315,74 +299,6 @@ const LandingPage = () => {
               <p className="text-sm text-slate-600 leading-relaxed">
                 Isi formulir di sebelah kiri dan lihat perubahan portofoliomu secara langsung di sebelah kanan.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------ TEMPLATE SHOWCASE ------------------ */}
-      <section id="template" className="py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-blue-700 mb-2">Desain Responsif</h2>
-            <p className="text-3xl font-bold text-slate-900 sm:text-4xl">
-              Pilih Gaya Template yang Sesuai Karaktermu
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Template 1: Academic */}
-            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all">
-              <div className="h-44 bg-gradient-to-r from-blue-900 to-indigo-800 p-6 flex items-end">
-                <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-medium rounded-md">
-                  🎓 Formal & Beasiswa
-                </span>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-slate-800 mb-2">Template Academic</h3>
-                <p className="text-xs text-slate-600 mb-6 leading-relaxed">
-                  Menonjolkan nilai akademis, prestasi perlombaan, riwayat organisasi, dan sertifikat resmi secara formal.
-                </p>
-                <Link to="/register" className="block text-center w-full py-2.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors">
-                  Gunakan Template Ini
-                </Link>
-              </div>
-            </div>
-
-            {/* Template 2: Creative */}
-            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all">
-              <div className="h-44 bg-gradient-to-r from-emerald-600 to-teal-800 p-6 flex items-end">
-                <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-medium rounded-md">
-                  🎨 Visual & Galeri Karya
-                </span>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-slate-800 mb-2">Template Creative</h3>
-                <p className="text-xs text-slate-600 mb-6 leading-relaxed">
-                  Tampilan grid visual yang modern untuk memamerkan galeri karya seni, desain, video, dan project kreatif.
-                </p>
-                <Link to="/register" className="block text-center w-full py-2.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-colors">
-                  Gunakan Template Ini
-                </Link>
-              </div>
-            </div>
-
-            {/* Template 3: Minimalist */}
-            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all">
-              <div className="h-44 bg-gradient-to-r from-slate-800 to-slate-900 p-6 flex items-end">
-                <span className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-medium rounded-md">
-                  ⚡ Single Page Vertical
-                </span>
-              </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-slate-800 mb-2">Template Minimalist</h3>
-                <p className="text-xs text-slate-600 mb-6 leading-relaxed">
-                  Layout vertikal ringkas 1 halaman yang cepat dibaca oleh penguji, HRD, maupun panitia seleksi.
-                </p>
-                <Link to="/register" className="block text-center w-full py-2.5 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
-                  Gunakan Template Ini
-                </Link>
-              </div>
             </div>
           </div>
         </div>
