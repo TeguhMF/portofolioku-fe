@@ -118,7 +118,7 @@ const LandingPage = () => {
               </div>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
-                Tampilkan Rekam Jejak Prestasi & Karyamu Dalam <span className="bg-gradient-to-r from-blue-700 via-indigo-600 to-emerald-500 bg-clip-text text-transparent">Satu Link.</span>
+                Tampilkan Rekam Jejak Prestasi & Karyamu Dalam <span className="text-blue-700">Satu Link.</span>
               </h1>
               
               <p className="text-base sm:text-lg text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
