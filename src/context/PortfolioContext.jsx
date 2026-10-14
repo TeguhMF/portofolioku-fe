@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const PortfolioContext = createContext(null);
 
@@ -20,38 +20,79 @@ export const PortfolioProvider = ({ children }) => {
     organizations: [],
     projects: [],
     skills: [],
+    builderSettings: {
+      template: 'modern',       // 'modern', 'minimalist', 'creative'
+      accentColor: 'blue',      // 'blue', 'purple', 'emerald', 'amber'
+      fontFamily: 'sans',       // 'sans', 'serif', 'mono'
+      sectionOrder: ['skills', 'achievements', 'organizations', 'projects'],
+      isDraft: true,
+    }
   });
 
+  // Load data dari localStorage jika ada
+  useEffect(() => {
+    const saved = localStorage.getItem('portfolio_master_data');
+    if (saved) {
+      try {
+        setPortfolioData(JSON.parse(saved));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+
+  const saveToLocalStorage = (newData) => {
+    setPortfolioData(newData);
+    localStorage.setItem('portfolio_master_data', JSON.stringify(newData));
+  };
+
   const updateProfile = (newProfile) => {
-    setPortfolioData((prev) => ({ ...prev, profile: { ...prev.profile, ...newProfile } }));
+    const updated = { ...portfolioData, profile: { ...portfolioData.profile, ...newProfile } };
+    saveToLocalStorage(updated);
+  };
+
+  const updateBuilderSettings = (newSettings) => {
+    const updated = { 
+      ...portfolioData, 
+      builderSettings: { ...portfolioData.builderSettings, ...newSettings } 
+    };
+    saveToLocalStorage(updated);
   };
 
   const addAchievement = (item) => {
-    setPortfolioData((prev) => ({ ...prev, achievements: [...prev.achievements, { ...item, id: Date.now() }] }));
+    const updated = { ...portfolioData, achievements: [...portfolioData.achievements, { ...item, id: Date.now() }] };
+    saveToLocalStorage(updated);
   };
   const removeAchievement = (id) => {
-    setPortfolioData((prev) => ({ ...prev, achievements: prev.achievements.filter((a) => a.id !== id) }));
+    const updated = { ...portfolioData, achievements: portfolioData.achievements.filter((a) => a.id !== id) };
+    saveToLocalStorage(updated);
   };
 
   const addOrganization = (item) => {
-    setPortfolioData((prev) => ({ ...prev, organizations: [...prev.organizations, { ...item, id: Date.now() }] }));
+    const updated = { ...portfolioData, organizations: [...portfolioData.organizations, { ...item, id: Date.now() }] };
+    saveToLocalStorage(updated);
   };
   const removeOrganization = (id) => {
-    setPortfolioData((prev) => ({ ...prev, organizations: prev.organizations.filter((o) => o.id !== id) }));
+    const updated = { ...portfolioData, organizations: portfolioData.organizations.filter((o) => o.id !== id) };
+    saveToLocalStorage(updated);
   };
 
   const addProject = (item) => {
-    setPortfolioData((prev) => ({ ...prev, projects: [...prev.projects, { ...item, id: Date.now() }] }));
+    const updated = { ...portfolioData, projects: [...portfolioData.projects, { ...item, id: Date.now() }] };
+    saveToLocalStorage(updated);
   };
   const removeProject = (id) => {
-    setPortfolioData((prev) => ({ ...prev, projects: prev.projects.filter((p) => p.id !== id) }));
+    const updated = { ...portfolioData, projects: portfolioData.projects.filter((p) => p.id !== id) };
+    saveToLocalStorage(updated);
   };
 
   const addSkill = (item) => {
-    setPortfolioData((prev) => ({ ...prev, skills: [...prev.skills, { ...item, id: Date.now() }] }));
+    const updated = { ...portfolioData, skills: [...portfolioData.skills, { ...item, id: Date.now() }] };
+    saveToLocalStorage(updated);
   };
   const removeSkill = (id) => {
-    setPortfolioData((prev) => ({ ...prev, skills: prev.skills.filter((s) => s.id !== id) }));
+    const updated = { ...portfolioData, skills: portfolioData.skills.filter((s) => s.id !== id) };
+    saveToLocalStorage(updated);
   };
 
   return (
@@ -59,6 +100,7 @@ export const PortfolioProvider = ({ children }) => {
       value={{
         portfolioData,
         updateProfile,
+        updateBuilderSettings,
         addAchievement,
         removeAchievement,
         addOrganization,
@@ -74,7 +116,6 @@ export const PortfolioProvider = ({ children }) => {
   );
 };
 
-/* eslint-disable-next-line react-refresh/only-export-components */
 export const usePortfolio = () => {
   const context = useContext(PortfolioContext);
   if (!context) throw new Error('usePortfolio harus di dalam <PortfolioProvider>');

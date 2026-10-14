@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { User, Phone, Globe, Camera } from 'lucide-react';
+import { User, Phone, Globe, Camera, Save, CheckCircle2 } from 'lucide-react';
 
 const ProfileTab = () => {
   const { portfolioData, updateProfile } = usePortfolio();
   const profile = portfolioData?.profile || {};
   const socialLinks = profile.social_links || {};
+
+  const [isSaved, setIsSaved] = useState(false);
 
   // Fungsi membuat username otomatis dari nama
   const slugify = (text) => {
@@ -12,13 +15,15 @@ const ProfileTab = () => {
       .toString()
       .toLowerCase()
       .trim()
-      .replace(/\s+/g, '-')        // Ganti spasi dengan -
-      .replace(/[^\w\-]+/g, '')    // Hapus karakter non-alphanumeric
-      .replace(/\-\-+/g, '-');     // Ganti multiple - dengan single -
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-');
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setIsSaved(false);
+
     if (name.startsWith('social_')) {
       const socialKey = name.replace('social_', '');
       updateProfile({
@@ -28,7 +33,6 @@ const ProfileTab = () => {
         },
       });
     } else if (name === 'name') {
-      // Jika nama diubah, otomatis generate username jika username masih sesuai nama lama / kosong
       const autoUsername = slugify(value);
       updateProfile({ 
         name: value,
@@ -39,22 +43,44 @@ const ProfileTab = () => {
     }
   };
 
+  // Mengubah gambar menjadi Data URL (Base64) agar aman disimpan di LocalStorage
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imagePreviewUrl = URL.createObjectURL(file);
-      updateProfile({ avatar_url: imagePreviewUrl });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateProfile({ avatar_url: reader.result });
+      };
+      reader.readAsDataURL(file);
     }
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    // Simpan ke localStorage agar data tersimpan
+    localStorage.setItem('portfolio_data', JSON.stringify(portfolioData));
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 3000);
   };
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 font-sans">
-      <div className="flex items-center gap-2 pb-4 border-b border-slate-100">
-        <User className="w-5 h-5 text-blue-600" />
-        <h2 className="text-base font-bold text-slate-800">Profil & Data Diri</h2>
+      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <User className="w-5 h-5 text-blue-600" />
+          <h2 className="text-base font-bold text-slate-800">Profil & Data Diri</h2>
+        </div>
+
+        {/* Indicator Toast tersimpan */}
+        {isSaved && (
+          <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 animate-in fade-in">
+            <CheckCircle2 className="w-4 h-4" /> Berhasil Disimpan!
+          </span>
+        )}
       </div>
 
-      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+      <form className="space-y-4" onSubmit={handleSave}>
+        {/* Upload Foto Profil */}
         <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
           <div className="relative w-20 h-20 rounded-2xl bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-blue-500 shrink-0 shadow-inner">
             {profile.avatar_url ? (
@@ -75,13 +101,14 @@ const ProfileTab = () => {
           </div>
         </div>
 
+        {/* Form Inputs */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
             <input
               type="text"
               name="name"
-              placeholder="Contoh: Muhammad Fajar"
+              placeholder="Contoh: Andika Septa"
               value={profile.name || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
@@ -96,7 +123,7 @@ const ProfileTab = () => {
                 name="username"
                 value={profile.username || ''}
                 onChange={handleChange}
-                placeholder='muhammad-fajar'
+                placeholder='andika'
                 className="w-full px-3 py-2 text-xs border border-slate-200 rounded-r-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-slate-50 font-mono text-blue-600 font-semibold"
               />
             </div>
@@ -111,7 +138,7 @@ const ProfileTab = () => {
               name="school_name"
               value={profile.school_name || ''}
               onChange={handleChange}
-              placeholder="SMAN 1 Jakarta"
+              placeholder="MAN 5 BOGOR"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
@@ -122,7 +149,7 @@ const ProfileTab = () => {
               name="career_goal"
               value={profile.career_goal || ''}
               onChange={handleChange}
-              placeholder="Contoh: Software Engineer"
+              placeholder="Bos muda"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
@@ -135,7 +162,7 @@ const ProfileTab = () => {
             rows="3"
             value={profile.bio || ''}
             onChange={handleChange}
-            placeholder="Ceritakan secara singkat tentang dirimu..."
+            placeholder="Tuliskan deskripsi diri Anda..."
             className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
           ></textarea>
         </div>
@@ -154,7 +181,7 @@ const ProfileTab = () => {
             <input
               type="text"
               name="phone_whatsapp"
-              placeholder="081234567890"
+              placeholder="08563617237"
               value={profile.phone_whatsapp || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
@@ -166,7 +193,7 @@ const ProfileTab = () => {
             <input
               type="text"
               name="social_linkedin"
-              placeholder="muhammad-fajar"
+              placeholder="Andkaspta ngrha"
               value={socialLinks.linkedin || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
@@ -178,7 +205,7 @@ const ProfileTab = () => {
             <input
               type="text"
               name="social_github"
-              placeholder="fajar-code"
+              placeholder="dikz22"
               value={socialLinks.github || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
@@ -190,12 +217,23 @@ const ProfileTab = () => {
             <input
               type="text"
               name="social_instagram"
-              placeholder="fajar_art"
+              placeholder="andkasptangrha"
               value={socialLinks.instagram || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
+        </div>
+
+        {/* Tombol Simpan Profil (Gambar 1) */}
+        <div className="pt-4 flex justify-end">
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer transform active:scale-95"
+          >
+            <Save className="w-4 h-4" />
+            <span>Simpan Profil</span>
+          </button>
         </div>
       </form>
     </div>

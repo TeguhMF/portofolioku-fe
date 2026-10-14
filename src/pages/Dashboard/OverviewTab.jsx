@@ -7,8 +7,6 @@ import {
   FolderGit2, 
   Sparkles, 
   ArrowRight, 
-  CheckCircle2, 
-  AlertCircle,
   Eye,
   ExternalLink
 } from 'lucide-react';
@@ -36,7 +34,7 @@ const OverviewTab = () => {
           </div>
 
           <a
-            href={`/p/${profile.username || ''}`}
+            href={`/p/${profile.username || 'preview'}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs rounded-xl shadow-md transition-all shrink-0 self-start md:self-center"
@@ -46,14 +44,13 @@ const OverviewTab = () => {
             <ExternalLink className="w-3.5 h-3.5 opacity-80" />
           </a>
         </div>
-        {/* Decorative blur circle */}
         <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
       </div>
 
       {/* Grid Utama 5 Kolom Ringkasan Modul */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        {/* 1. KOLOM PROFIL & AKADEMIK */}
+        {/* 1. PROFIL & AKADEMIK */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -63,9 +60,7 @@ const OverviewTab = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-800">Profil & Akademik</h3>
-                  <p className="text-[11px] text-slate-500">
-                    Keterangan: Berisi identitas diri, sekolah, bio, target karir, dan tautan sosial media.
-                  </p>
+                  <p className="text-[11px] text-slate-500">Berisi identitas diri, sekolah, bio, dan target karir.</p>
                 </div>
               </div>
             </div>
@@ -83,10 +78,6 @@ const OverviewTab = () => {
                 <span className="text-slate-500">Target Cita-cita:</span>
                 <span className="font-semibold text-emerald-600">{profile.career_goal || '-'}</span>
               </div>
-              <div className="flex justify-between items-center text-xs">
-                <span className="text-slate-500">Username URL:</span>
-                <span className="font-mono text-blue-600 font-semibold">{profile.username ? `/p/${profile.username}` : '-'}</span>
-              </div>
             </div>
           </div>
 
@@ -99,7 +90,7 @@ const OverviewTab = () => {
           </Link>
         </div>
 
-        {/* 2. KOLOM ORGANISASI & EKSKUL */}
+        {/* 2. ORGANISASI & EKSKUL */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -109,9 +100,7 @@ const OverviewTab = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-800">Organisasi & Ekskul</h3>
-                  <p className="text-[11px] text-slate-500">
-                    Keterangan: Catatan rekam jejak kepemimpinan, ekskul, dan peran keorganisasian.
-                  </p>
+                  <p className="text-[11px] text-slate-500">Catatan rekam jejak kepemimpinan dan ekskul.</p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
@@ -122,7 +111,7 @@ const OverviewTab = () => {
             <div className="space-y-2">
               {organizations.length === 0 ? (
                 <div className="p-3 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center text-xs text-slate-400 italic">
-                  Belum ada data organisasi ditambahkan.
+                  Belum ada data organisasi.
                 </div>
               ) : (
                 organizations.slice(0, 3).map((org) => (
@@ -131,9 +120,6 @@ const OverviewTab = () => {
                       <p className="font-bold text-slate-800">{org.role}</p>
                       <p className="text-[10px] text-slate-500">{org.organization_name}</p>
                     </div>
-                    <span className="text-[10px] font-semibold text-slate-400">
-                      {org.start_year} - {org.end_year || 'Sekarang'}
-                    </span>
                   </div>
                 ))
               )}
@@ -149,7 +135,7 @@ const OverviewTab = () => {
           </Link>
         </div>
 
-        {/* 3. KOLOM PRESTASI & SERTIFIKAT */}
+        {/* 3. PRESTASI & SERTIFIKAT */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -159,9 +145,7 @@ const OverviewTab = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-800">Prestasi & Sertifikat</h3>
-                  <p className="text-[11px] text-slate-500">
-                    Keterangan: Daftar kejuaraan, penghargaan akademik/non-akademik, dan piagam sertifikat.
-                  </p>
+                  <p className="text-[11px] text-slate-500">Daftar kejuaraan dan piagam sertifikat.</p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
@@ -172,18 +156,15 @@ const OverviewTab = () => {
             <div className="space-y-2">
               {achievements.length === 0 ? (
                 <div className="p-3 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center text-xs text-slate-400 italic">
-                  Belum ada prestasi ditambahkan.
+                  Belum ada prestasi.
                 </div>
               ) : (
                 achievements.slice(0, 3).map((ach) => (
                   <div key={ach.id} className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex justify-between items-center text-xs">
                     <div>
                       <p className="font-bold text-slate-800">{ach.title}</p>
-                      <p className="text-[10px] text-slate-500">Tingkat {ach.level} ({ach.year})</p>
+                      <p className="text-[10px] text-slate-500">Tingkat {ach.level}</p>
                     </div>
-                    <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold">
-                      {ach.rank}
-                    </span>
                   </div>
                 ))
               )}
@@ -199,7 +180,7 @@ const OverviewTab = () => {
           </Link>
         </div>
 
-        {/* 4. KOLOM KARYA & PROJECT */}
+        {/* 4. KARYA & PROJECT */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -209,9 +190,7 @@ const OverviewTab = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-800">Karya & Project</h3>
-                  <p className="text-[11px] text-slate-500">
-                    Keterangan: Galeri pameran hasil tugas, karya aplikasi, tulisan, maupun desain visual.
-                  </p>
+                  <p className="text-[11px] text-slate-500">Galeri pameran tugas atau project siswa.</p>
                 </div>
               </div>
               <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -222,14 +201,13 @@ const OverviewTab = () => {
             <div className="space-y-2">
               {projects.length === 0 ? (
                 <div className="p-3 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center text-xs text-slate-400 italic">
-                  Belum ada karya ditambahkan.
+                  Belum ada karya.
                 </div>
               ) : (
                 projects.slice(0, 3).map((proj) => (
                   <div key={proj.id} className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex justify-between items-center text-xs">
                     <div>
                       <p className="font-bold text-slate-800">{proj.title}</p>
-                      <p className="text-[10px] text-slate-500 capitalize">Kategori: {proj.category}</p>
                     </div>
                   </div>
                 ))
@@ -246,7 +224,7 @@ const OverviewTab = () => {
           </Link>
         </div>
 
-        {/* 5. KOLOM KEAHLIAN & CITA-CITA (SPAN FULL ON MD) */}
+        {/* 5. KEAHLIAN & CITA-CITA */}
         <div className="md:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -256,40 +234,26 @@ const OverviewTab = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-800">Keahlian & Cita-cita</h3>
-                  <p className="text-[11px] text-slate-500">
-                    Keterangan: Daftar keterampilan teknis (Hard Skill), non-teknis (Soft Skill), serta impian target profesi masa depan.
-                  </p>
+                  <p className="text-[11px] text-slate-500">Hard skill, soft skill, dan target profesi masa depan.</p>
                 </div>
               </div>
-              <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-700 border border-purple-200">
-                {skills.length} Keahlian
-              </span>
             </div>
 
-            <div className="space-y-4">
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                <p className="text-xs font-semibold text-slate-500 mb-1">Target Cita-cita / Karir:</p>
-                <p className="text-xs font-bold text-purple-800">
-                  {profile.career_goal ? profile.career_goal : 'Belum diisi (isi di menu profil)'}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold text-slate-600 mb-2">Daftar Keahlian Aktif:</p>
-                {skills.length === 0 ? (
-                  <div className="p-3 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center text-xs text-slate-400 italic">
-                    Belum ada keahlian ditambahkan.
-                  </div>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {skills.map((skill) => (
-                      <span key={skill.id} className="px-3 py-1 rounded-xl bg-purple-50 text-purple-700 border border-purple-200/60 text-xs font-medium">
-                        {skill.skill_name} ({skill.category === 'hard_skill' ? 'Hard Skill' : 'Soft Skill'})
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+            <div className="space-y-3">
+              <p className="text-xs font-semibold text-slate-600">
+                Target Karir: <span className="font-bold text-purple-700">{profile.career_goal || 'Belum diisi'}</span>
+              </p>
+              {skills.length === 0 ? (
+                <p className="text-xs text-slate-400 italic">Belum ada keahlian ditambahkan.</p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {skills.map((skill) => (
+                    <span key={skill.id} className="px-3 py-1 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 text-xs font-medium">
+                      {skill.skill_name}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -303,7 +267,6 @@ const OverviewTab = () => {
         </div>
 
       </div>
-
     </div>
   );
 };
