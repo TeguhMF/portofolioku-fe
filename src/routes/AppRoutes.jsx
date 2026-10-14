@@ -5,6 +5,7 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import DashboardLayout from '../layouts/DashboardLayout';
 import DashboardContainer from '../pages/Dashboard/DashboardContainer';
+import OverviewTab from '../pages/Dashboard/OverviewTab'; // <-- Import komponen Overview baru
 import ProfileTab from '../pages/Dashboard/ProfileTab';
 import OrganizationsTab from '../pages/Dashboard/OrganizationsTab';
 import AchievementsTab from '../pages/Dashboard/AchievementsTab';
@@ -31,7 +32,8 @@ const AppRoutes = () => {
         }
       >
         <Route element={<DashboardContainer />}>
-          <Route index element={<ProfileTab />} />
+          <Route index element={<OverviewTab />} /> {/* <-- Set OverviewTab sebagai halaman utama dashboard */}
+          <Route path="overview" element={<OverviewTab />} />
           <Route path="profile" element={<ProfileTab />} />
           <Route path="organizations" element={<OrganizationsTab />} />
           <Route path="achievements" element={<AchievementsTab />} />

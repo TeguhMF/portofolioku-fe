@@ -6,6 +6,17 @@ const ProfileTab = () => {
   const profile = portfolioData?.profile || {};
   const socialLinks = profile.social_links || {};
 
+  // Fungsi membuat username otomatis dari nama
+  const slugify = (text) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')        // Ganti spasi dengan -
+      .replace(/[^\w\-]+/g, '')    // Hapus karakter non-alphanumeric
+      .replace(/\-\-+/g, '-');     // Ganti multiple - dengan single -
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.startsWith('social_')) {
@@ -15,6 +26,13 @@ const ProfileTab = () => {
           ...socialLinks,
           [socialKey]: value,
         },
+      });
+    } else if (name === 'name') {
+      // Jika nama diubah, otomatis generate username jika username masih sesuai nama lama / kosong
+      const autoUsername = slugify(value);
+      updateProfile({ 
+        name: value,
+        username: profile.username ? profile.username : autoUsername
       });
     } else {
       updateProfile({ [name]: value });
@@ -38,12 +56,12 @@ const ProfileTab = () => {
 
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-          <div className="relative w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-blue-500 shrink-0">
+          <div className="relative w-20 h-20 rounded-2xl bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-blue-500 shrink-0 shadow-inner">
             {profile.avatar_url ? (
               <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
-              <span className="text-xl font-bold text-blue-600">
-                {profile.name ? profile.name.split(' ').map((n) => n[0]).join('') : 'P'}
+              <span className="text-2xl font-bold text-blue-700">
+                {profile.name ? profile.name.split(' ').map((n) => n[0]).join('') : 'S'}
               </span>
             )}
           </div>
@@ -63,6 +81,7 @@ const ProfileTab = () => {
             <input
               type="text"
               name="name"
+              placeholder="Contoh: Muhammad Fajar"
               value={profile.name || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
@@ -70,14 +89,17 @@ const ProfileTab = () => {
           </div>
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1">Username (URL Portofolio)</label>
-            <input
-              type="text"
-              name="username"
-              value={profile.username || ''}
-              onChange={handleChange}
-              placeholder='portofolioku.com/p/fajar-12'
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-slate-50"
-            />
+            <div className="flex items-center">
+              <span className="text-xs text-slate-400 bg-slate-100 px-2.5 py-2 border border-r-0 border-slate-200 rounded-l-xl font-mono">/p/</span>
+              <input
+                type="text"
+                name="username"
+                value={profile.username || ''}
+                onChange={handleChange}
+                placeholder='muhammad-fajar'
+                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-r-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-slate-50 font-mono text-blue-600 font-semibold"
+              />
+            </div>
           </div>
         </div>
 
@@ -89,7 +111,7 @@ const ProfileTab = () => {
               name="school_name"
               value={profile.school_name || ''}
               onChange={handleChange}
-              placeholder="MAN 5 BOGOR"
+              placeholder="SMAN 1 Jakarta"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
@@ -100,20 +122,20 @@ const ProfileTab = () => {
               name="career_goal"
               value={profile.career_goal || ''}
               onChange={handleChange}
-              placeholder="Contoh: Dokter, Guru, Atlet, atau Programmer"
+              placeholder="Contoh: Software Engineer"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-600 mb-1">Tentang Saya</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Tentang Saya (Bio)</label>
           <textarea
             name="bio"
             rows="3"
             value={profile.bio || ''}
             onChange={handleChange}
-            placeholder="Ceritakan secara singkat tentang dirimu, minat, atau hal yang ingin kamu capai."
+            placeholder="Ceritakan secara singkat tentang dirimu..."
             className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
           ></textarea>
         </div>
@@ -156,7 +178,7 @@ const ProfileTab = () => {
             <input
               type="text"
               name="social_github"
-              placeholder="fajar12-code"
+              placeholder="fajar-code"
               value={socialLinks.github || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
@@ -168,7 +190,7 @@ const ProfileTab = () => {
             <input
               type="text"
               name="social_instagram"
-              placeholder="fajar_tech"
+              placeholder="fajar_art"
               value={socialLinks.instagram || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
