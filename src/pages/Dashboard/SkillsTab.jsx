@@ -1,65 +1,116 @@
 import { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { Sparkles, Plus, Trash2 } from 'lucide-react';
+import { Award, Plus, Trash2, Loader2, Sparkles } from 'lucide-react';
 
 const SkillsTab = () => {
-  const { portfolioData, addSkill, removeSkill } = usePortfolio();
-  const { skills } = portfolioData;
+  const context = usePortfolio() || {};
+  const { portfolioData = {}, addSkill = () => {}, deleteSkill = () => {} } = context;
+  const skills = Array.isArray(portfolioData?.skills) ? portfolioData.skills : [];
 
   const [form, setForm] = useState({
-    skill_name: '',
-    category: 'hard_skill',
+    name: '',
+    category: 'Soft Skill',
+    level: 'Menengah',
   });
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.skill_name) return;
-    addSkill(form);
-    setForm({ skill_name: '', category: 'hard_skill' });
+    if (!form.name) return;
+
+    setLoading(true);
+    try {
+      await addSkill(form);
+      setForm({
+        name: '',
+        category: 'Soft Skill',
+        level: 'Menengah',
+      });
+    } catch (error) {
+      console.error('Gagal menambahkan keahlian:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteSkill(id);
+    } catch (error) {
+      console.error('Gagal menghapus keahlian:', error);
+    }
   };
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 font-sans">
       <div className="flex items-center gap-2 pb-4 border-b border-slate-100">
-        <Sparkles className="w-5 h-5 text-purple-600" />
+        <Sparkles className="w-5 h-5 text-amber-500" />
         <h2 className="text-base font-bold text-slate-800">Kelola Keahlian & Minat</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200/80">
         <h3 className="text-xs font-bold text-slate-700">Tambah Keahlian Baru</h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Keahlian / Minat</label>
-            <input
-              type="text"
-              required
-              placeholder="Contoh: Python, Public Speaking, Graphic Design"
-              value={form.skill_name}
-              onChange={(e) => setForm({ ...form, skill_name: e.target.value })}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:outline-none bg-white"
-            />
-          </div>
+        <div>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Keahlian</label>
+          <input
+            type="text"
+            required
+            placeholder="Contoh: Public Speaking / Editing Video (CapCut) / Bahasa Inggris"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white"
+          />
+        </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Pilih Jenis Keahlian</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Kategori Keahlian</label>
             <select
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-600 focus:outline-none bg-white"
+              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white"
             >
-              <option value="hard_skill">Keahlian Teknis (Hard Skill)</option>
-              <option value="soft_skill">Keahlian Nonteknis (Soft Skill)</option>
+              <option value="Soft Skill">Soft Skill (Komunikasi, Kepemimpinan, dll)</option>
+              <option value="Teknologi & Digital">Teknologi & Digital (Editing, Office, dll)</option>
+              <option value="Bahasa Asing">Bahasa Asing</option>
+              <option value="Seni & Kreatif">Seni & Kreatif (Fotografi, Seni Rupa, Musik)</option>
+              <option value="Akademik & Olahraga">Akademik & Olahraga</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Tingkat Kemahiran</label>
+            <select
+              value={form.level}
+              onChange={(e) => setForm({ ...form, level: e.target.value })}
+              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none bg-white"
+            >
+              <option value="Pemula">Pemula (Basic)</option>
+              <option value="Menengah">Menengah (Intermediate)</option>
+              <option value="Mahir">Mahir (Advanced)</option>
             </select>
           </div>
         </div>
 
         <button
           type="submit"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+          disabled={loading}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
-          <span>Tambah Keahlian</span>
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Menambahkan...</span>
+            </>
+          ) : (
+            <>
+              <Plus className="w-4 h-4" />
+              <span>Tambah Keahlian</span>
+            </>
+          )}
         </button>
       </form>
 
@@ -68,21 +119,25 @@ const SkillsTab = () => {
         {skills.length === 0 ? (
           <p className="text-xs text-slate-400 italic">Belum ada keahlian ditambahkan.</p>
         ) : (
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {skills.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-purple-200 bg-purple-50 text-purple-900 text-xs font-semibold"
-              >
-                <span>{item.skill_name}</span>
-                <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-purple-200 text-purple-800">
-                  {item.category === 'hard_skill' ? 'Hard' : 'Soft'}
-                </span>
+              <div key={item.id} className="flex justify-between items-center p-3 rounded-xl border border-slate-200 bg-white">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 bg-amber-50 rounded-lg text-amber-600">
+                    <Award className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-800">{item.name}</h4>
+                    <p className="text-[10px] text-slate-500">
+                      {item.category} • <span className="font-medium text-amber-600">{item.level}</span>
+                    </p>
+                  </div>
+                </div>
                 <button
-                  onClick={() => removeSkill(item.id)}
-                  className="p-0.5 text-purple-400 hover:text-rose-600 transition-colors"
+                  onClick={() => handleDelete(item.id)}
+                  className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
             ))}

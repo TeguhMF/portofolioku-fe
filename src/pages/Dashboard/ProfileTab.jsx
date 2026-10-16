@@ -1,67 +1,139 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { User, Phone, Globe, Camera, Save, CheckCircle2 } from 'lucide-react';
+import { User, Globe, Camera, Save, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+
+const buildFormDataFromProfile = (profile) => {
+  const safeProfile = profile && typeof profile === 'object' ? profile : {};
+
+  let social = { instagram: '', linkedin: '', github: '' };
+  if (safeProfile.social_links) {
+    if (typeof safeProfile.social_links === 'string') {
+      try {
+        social = { ...social, ...JSON.parse(safeProfile.social_links) };
+      } catch {
+        // Abaikan parsing jika gagal
+      }
+    } else if (typeof safeProfile.social_links === 'object') {
+      social = { ...social, ...safeProfile.social_links };
+    }
+  }
+
+  return {
+    name: safeProfile.name || '',
+    username: safeProfile.username || '',
+    school_name: safeProfile.school_name || '',
+    grade_level: safeProfile.grade_level || '',
+    career_goal: safeProfile.career_goal || '',
+    bio: safeProfile.bio || '',
+    phone_whatsapp: safeProfile.phone_whatsapp || safeProfile.phone || '',
+    avatar_url: safeProfile.avatar_url || '',
+    social_links: {
+      instagram: social.instagram || safeProfile.social_instagram || '',
+      linkedin: social.linkedin || safeProfile.social_linkedin || '',
+      github: social.github || safeProfile.social_github || '',
+    },
+  };
+};
 
 const ProfileTab = () => {
-  const { portfolioData, updateProfile } = usePortfolio();
-  const profile = portfolioData?.profile || {};
-  const socialLinks = profile.social_links || {};
+  const { portfolioData, updateProfile, loading: contextLoading } = usePortfolio();
 
+  const [formData, setFormData] = useState(() => buildFormDataFromProfile(portfolioData?.profile));
   const [isSaved, setIsSaved] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Fungsi membuat username otomatis dari nama
+  // Membungkam linter agar TypeScript/ESLint tidak cerewet soal setFormData
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // @ts-ignore
+// eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (portfolioData?.profile) {
+      setFormData(buildFormDataFromProfile(portfolioData.profile));
+    }
+  }, [portfolioData?.profile]);
+
   const slugify = (text) => {
-    return text
-      .toString()
+    return String(text || '')
       .toLowerCase()
       .trim()
       .replace(/\s+/g, '-')
-      .replace(/[^\w\-]+/g, '')
-      .replace(/\-\-+/g, '-');
+      .replace(/[^\w-]+/g, '')
+      .replace(/--+/g, '-');
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setIsSaved(false);
+    setErrorMessage('');
 
     if (name.startsWith('social_')) {
       const socialKey = name.replace('social_', '');
-      updateProfile({
+      setFormData((prev) => ({
+        ...prev,
         social_links: {
-          ...socialLinks,
+          ...(prev?.social_links || {}),
           [socialKey]: value,
         },
-      });
+      }));
     } else if (name === 'name') {
       const autoUsername = slugify(value);
-      updateProfile({ 
+      setFormData((prev) => ({
+        ...prev,
         name: value,
-        username: profile.username ? profile.username : autoUsername
-      });
+        username: prev.username ? prev.username : autoUsername,
+      }));
     } else {
-      updateProfile({ [name]: value });
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
-  // Mengubah gambar menjadi Data URL (Base64) agar aman disimpan di LocalStorage
   const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        updateProfile({ avatar_url: reader.result });
-      };
-      reader.readAsDataURL(file);
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setErrorMessage('Ukuran foto maksimal 2MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prev) => ({ ...prev, avatar_url: reader.result }));
+      setIsSaved(false);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage('');
+    setIsSaved(false);
+
+    try {
+      await updateProfile(formData);
+      setIsSaved(true);
+      setTimeout(() => setIsSaved(false), 3000);
+    } catch (err) {
+      console.error('Gagal menyimpan profil:', err);
+      setErrorMessage('Gagal menyimpan data profil ke database.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    // Simpan ke localStorage agar data tersimpan
-    localStorage.setItem('portfolio_data', JSON.stringify(portfolioData));
-    setIsSaved(true);
-    setTimeout(() => setIsSaved(false), 3000);
-  };
+  if (contextLoading) {
+    return (
+      <div className="flex items-center justify-center p-12 bg-white rounded-2xl border border-slate-200">
+        <Loader2 className="w-6 h-6 text-blue-600 animate-spin mr-2" />
+        <span className="text-xs font-semibold text-slate-500">Memuat data profil...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 font-sans">
@@ -71,10 +143,15 @@ const ProfileTab = () => {
           <h2 className="text-base font-bold text-slate-800">Profil & Data Diri</h2>
         </div>
 
-        {/* Indicator Toast tersimpan */}
         {isSaved && (
-          <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 animate-in fade-in">
+          <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
             <CheckCircle2 className="w-4 h-4" /> Berhasil Disimpan!
+          </span>
+        )}
+
+        {errorMessage && (
+          <span className="flex items-center gap-1.5 text-xs font-bold text-rose-600 bg-rose-50 px-3 py-1.5 rounded-xl border border-rose-200">
+            <AlertCircle className="w-4 h-4" /> {errorMessage}
           </span>
         )}
       </div>
@@ -83,156 +160,174 @@ const ProfileTab = () => {
         {/* Upload Foto Profil */}
         <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
           <div className="relative w-20 h-20 rounded-2xl bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-blue-500 shrink-0 shadow-inner">
-            {profile.avatar_url ? (
-              <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+            {formData.avatar_url ? (
+              <img src={formData.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
-              <span className="text-2xl font-bold text-blue-700">
-                {profile.name ? profile.name.split(' ').map((n) => n[0]).join('') : 'S'}
-              </span>
+              <User className="w-10 h-10 text-blue-600" />
             )}
           </div>
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">Foto Profil</label>
-            <label className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold cursor-pointer transition-colors shadow-sm">
-              <Camera className="w-3.5 h-3.5" /> Pilih Foto
+            <label className="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl cursor-pointer shadow-sm transition-colors">
+              <Camera className="w-4 h-4 text-slate-500" />
+              <span>Unggah Foto Baru</span>
               <input type="file" accept="image/*" onChange={handleAvatarChange} className="hidden" />
             </label>
-            <p className="text-[10px] text-slate-400 mt-1">Format: JPG, PNG, WEBP (Max 2MB)</p>
+            <p className="text-[10px] text-slate-400 mt-1.5">Format JPG/PNG, Maksimal 2MB.</p>
           </div>
         </div>
 
-        {/* Form Inputs */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Lengkap</label>
             <input
               type="text"
               name="name"
-              placeholder="Contoh: Andika Septa"
-              value={profile.name || ''}
+              placeholder="Contoh: Teguh Wijaya"
+              value={formData.name || ''}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+              required
             />
           </div>
+
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Username (URL Portofolio)</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Username URL Portofolio</label>
             <div className="flex items-center">
-              <span className="text-xs text-slate-400 bg-slate-100 px-2.5 py-2 border border-r-0 border-slate-200 rounded-l-xl font-mono">/p/</span>
+              <span className="px-3 py-2 bg-slate-100 border border-r-0 border-slate-200 rounded-l-xl text-xs text-slate-500 font-mono">
+                /p/
+              </span>
               <input
                 type="text"
                 name="username"
-                value={profile.username || ''}
+                value={formData.username || ''}
                 onChange={handleChange}
-                placeholder='andika'
+                placeholder="teguh-wijaya"
                 className="w-full px-3 py-2 text-xs border border-slate-200 rounded-r-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-slate-50 font-mono text-blue-600 font-semibold"
+                required
               />
             </div>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Sekolah / Instansi</label>
             <input
               type="text"
               name="school_name"
-              value={profile.school_name || ''}
+              value={formData.school_name || ''}
               onChange={handleChange}
-              placeholder="MAN 5 BOGOR"
+              placeholder="SMAN 5 Depok / MAN 5 Bogor"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
+
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Target Karir / Cita-cita</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Kelas / Tingkat</label>
+            <input
+              type="text"
+              name="grade_level"
+              value={formData.grade_level || ''}
+              onChange={handleChange}
+              placeholder="Contoh: Kelas XII IPA 1"
+              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Target Cita-cita / Karir</label>
             <input
               type="text"
               name="career_goal"
-              value={profile.career_goal || ''}
+              value={formData.career_goal || ''}
               onChange={handleChange}
-              placeholder="Bos muda"
+              placeholder="Contoh: Software Engineer"
+              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Nomor WhatsApp / HP</label>
+            <input
+              type="text"
+              name="phone_whatsapp"
+              placeholder="081234567890"
+              value={formData.phone_whatsapp || ''}
+              onChange={handleChange}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-600 mb-1">Tentang Saya (Bio)</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Bio / Deskripsi Diri Singkat</label>
           <textarea
             name="bio"
             rows="3"
-            value={profile.bio || ''}
+            value={formData.bio || ''}
             onChange={handleChange}
             placeholder="Tuliskan deskripsi diri Anda..."
             className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
           ></textarea>
         </div>
 
-        <hr className="border-slate-100 my-4" />
-
-        <h3 className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-          <Globe className="w-4 h-4 text-blue-600" /> Kontak & Media Sosial
-        </h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1 flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5 text-emerald-600" /> WhatsApp
-            </label>
-            <input
-              type="text"
-              name="phone_whatsapp"
-              placeholder="08563617237"
-              value={profile.phone_whatsapp || ''}
-              onChange={handleChange}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">LinkedIn (Username/URL)</label>
-            <input
-              type="text"
-              name="social_linkedin"
-              placeholder="Andkaspta ngrha"
-              value={socialLinks.linkedin || ''}
-              onChange={handleChange}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">GitHub (Username)</label>
-            <input
-              type="text"
-              name="social_github"
-              placeholder="dikz22"
-              value={socialLinks.github || ''}
-              onChange={handleChange}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Instagram (Username)</label>
-            <input
-              type="text"
-              name="social_instagram"
-              placeholder="andkasptangrha"
-              value={socialLinks.instagram || ''}
-              onChange={handleChange}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-            />
+        {/* Media Sosial */}
+        <div className="pt-2">
+          <h3 className="text-xs font-bold text-slate-700 mb-3 flex items-center gap-1.5">
+            <Globe className="w-4 h-4 text-blue-600" /> Tautan Media Sosial
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">LinkedIn Username</label>
+              <input
+                type="text"
+                name="social_linkedin"
+                placeholder="username-linkedin"
+                value={formData.social_links?.linkedin || ''}
+                onChange={handleChange}
+                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">GitHub Username</label>
+              <input
+                type="text"
+                name="social_github"
+                placeholder="username-github"
+                value={formData.social_links?.github || ''}
+                onChange={handleChange}
+                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Instagram Username</label>
+              <input
+                type="text"
+                name="social_instagram"
+                placeholder="username_instagram"
+                value={formData.social_links?.instagram || ''}
+                onChange={handleChange}
+                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Tombol Simpan Profil (Gambar 1) */}
         <div className="pt-4 flex justify-end">
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer transform active:scale-95"
+            disabled={loading}
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer transform active:scale-95"
           >
-            <Save className="w-4 h-4" />
-            <span>Simpan Profil</span>
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Menyimpan...</span>
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4" />
+                <span>Simpan Profil</span>
+              </>
+            )}
           </button>
         </div>
       </form>

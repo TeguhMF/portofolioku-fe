@@ -26,7 +26,7 @@ const OverviewTab = () => {
               Ringkasan Portofolio
             </span>
             <h1 className="text-2xl font-extrabold mt-2">
-              Halo, {profile.name || 'Siswa'} 👋
+              Halo, {profile.name || 'Siswa'}
             </h1>
             <p className="text-xs text-blue-100/90 mt-1 max-w-xl leading-relaxed">
               Berikut adalah ringkasan rekam jejak portofoliomu. Pastikan semua informasi terisi dengan lengkap dan akurat agar tampilan portofolio publikmu makin menarik!

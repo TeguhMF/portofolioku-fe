@@ -1,15 +1,29 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GraduationCap, Mail, Lock } from 'lucide-react';
+import { GraduationCap, Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = usePortfolio(); // Menggunakan fungsi login dari Context
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem('auth_token', 'dummy_token_12345');
-    navigate('/dashboard');
+    setError('');
+    setLoading(true);
+
+    try {
+      // Memanggil login() agar state isAuthenticated di PortfolioContext berubah jadi true
+      await login(formData);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login gagal, periksa email dan kata sandi Anda.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,6 +71,14 @@ const Login = () => {
               <div className="w-8 h-1 bg-blue-600 rounded-full mt-1 mx-auto sm:mx-0"></div>
             </div>
 
+            {/* Pesan Error Alert jika Login Gagal */}
+            {error && (
+              <div className="flex items-center gap-2 p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-600 text-xs animate-in fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
+
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1">Email / Nama Pengguna</label>
               <div className="relative">
@@ -93,9 +115,17 @@ const Login = () => {
 
             <button 
               type="submit" 
-              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-full shadow-lg shadow-blue-500/30 transition-all transform active:scale-95 cursor-pointer"
+              disabled={loading}
+              className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold text-xs rounded-full shadow-lg shadow-blue-500/30 transition-all transform active:scale-95 cursor-pointer flex items-center justify-center gap-2"
             >
-              LOGIN
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>MEMPROSES...</span>
+                </>
+              ) : (
+                <span>LOGIN</span>
+              )}
             </button>
 
             <p className="text-center text-[11px] text-slate-500 sm:hidden pt-2">

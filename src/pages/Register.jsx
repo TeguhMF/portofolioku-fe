@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GraduationCap, Mail, Lock, User, School } from 'lucide-react';
+import { GraduationCap, Mail, Lock, User, School, AlertCircle, Loader2 } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 const Register = () => {
   const navigate = useNavigate();
+  const { register } = usePortfolio(); // Menggunakan fungsi register dari Context
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -11,11 +13,28 @@ const Register = () => {
     email: '',
     password: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem('auth_token', 'dummy_token_12345');
-    navigate('/dashboard');
+    setError('');
+    setLoading(true);
+
+    try {
+      // Memanggil register() agar state isAuthenticated di PortfolioContext berubah jadi true
+      await register(formData);
+      navigate('/dashboard');
+    } catch (err) {
+      if (err.response?.data?.errors) {
+        const firstError = Object.values(err.response.data.errors)[0][0];
+        setError(firstError);
+      } else {
+        setError(err.response?.data?.message || 'Registrasi gagal, periksa kembali data Anda.');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,6 +81,14 @@ const Register = () => {
               <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Daftar Akun</h2>
               <div className="w-8 h-1 bg-blue-600 rounded-full mt-1 mx-auto sm:mx-0"></div>
             </div>
+
+            {/* Pesan Error Alert */}
+            {error && (
+              <div className="flex items-center gap-2 p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-600 text-xs animate-in fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
 
             <div>
               <label className="block text-[11px] font-semibold text-slate-600 mb-1">Nama Lengkap</label>
@@ -138,9 +165,17 @@ const Register = () => {
 
             <button 
               type="submit" 
-              className="w-full py-3 mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-full shadow-lg shadow-blue-500/30 transition-all transform active:scale-95 cursor-pointer"
+              disabled={loading}
+              className="w-full py-3 mt-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold text-xs rounded-full shadow-lg shadow-blue-500/30 transition-all transform active:scale-95 cursor-pointer flex items-center justify-center gap-2"
             >
-              DAFTAR
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>MEMPROSES...</span>
+                </>
+              ) : (
+                <span>DAFTAR</span>
+              )}
             </button>
 
             <p className="text-center text-[11px] text-slate-500 sm:hidden pt-2">

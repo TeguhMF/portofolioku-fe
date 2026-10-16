@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
-import { Award, Plus, Trash2, FileCheck } from 'lucide-react';
+import { Award, Plus, Trash2, FileCheck, Loader2 } from 'lucide-react';
 
 const AchievementsTab = () => {
-  const { portfolioData, addAchievement, removeAchievement } = usePortfolio();
-  const { achievements } = portfolioData;
+  const { portfolioData, addAchievement, deleteAchievement } = usePortfolio();
+  const achievements = Array.isArray(portfolioData?.achievements) ? portfolioData.achievements : [];
 
   const [form, setForm] = useState({
     title: '',
@@ -15,20 +15,58 @@ const AchievementsTab = () => {
     certificate_url: '',
   });
 
+  const [loading, setLoading] = useState(false);
 
   const handleCertificateUpload = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
-      const previewUrl = URL.createObjectURL(file);
-      setForm({ ...form, certificate_url: previewUrl });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm((prev) => ({ ...prev, certificate_url: reader.result }));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.title) return;
-    addAchievement(form);
-    setForm({ title: '', rank: 'Juara 1', level: 'nasional', year: '2026', description: '', certificate_url: '' });
+
+    setLoading(true);
+    try {
+      // Menyiapkan payload data lengkap untuk disajikan ke API Laravel
+      const payload = {
+        title: form.title,
+        issuer: `${form.rank || 'Juara'} (Tingkat ${form.level || 'Nasional'})`,
+        year: String(form.year || '2026'),
+        description: form.description || `${form.rank} Tingkat ${form.level}`,
+        rank: form.rank,
+        level: form.level,
+        certificate_url: form.certificate_url,
+      };
+
+      await addAchievement(payload);
+      setForm({
+        title: '',
+        rank: 'Juara 1',
+        level: 'nasional',
+        year: '2026',
+        description: '',
+        certificate_url: '',
+      });
+    } catch (error) {
+      console.error('Gagal menambahkan prestasi:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteAchievement(id);
+    } catch (error) {
+      console.error('Gagal menghapus prestasi:', error);
+    }
   };
 
   return (
@@ -107,10 +145,20 @@ const AchievementsTab = () => {
 
         <button
           type="submit"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+          disabled={loading}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 disabled:bg-amber-400 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
-          <span>Tambah Prestasi</span>
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Menambahkan...</span>
+            </>
+          ) : (
+            <>
+              <Plus className="w-4 h-4" />
+              <span>Tambah Prestasi</span>
+            </>
+          )}
         </button>
       </form>
 
@@ -128,13 +176,13 @@ const AchievementsTab = () => {
                 <div>
                   <h4 className="text-xs font-bold text-slate-800">{item.title}</h4>
                   <p className="text-[10px] text-slate-500">
-                    {item.rank} • Tingkat {item.level} ({item.year})
+                    {item.rank || item.issuer} • Tingkat {item.level || 'Nasional'} ({item.year})
                   </p>
                 </div>
               </div>
               <button
-                onClick={() => removeAchievement(item.id)}
-                className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+                onClick={() => handleDelete(item.id)}
+                className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
               </button>

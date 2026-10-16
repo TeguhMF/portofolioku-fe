@@ -53,7 +53,6 @@ const DashboardLayout = () => {
     { name: 'Prestasi & Sertifikat', path: '/dashboard/achievements', icon: Award },
     { name: 'Karya & Project', path: '/dashboard/projects', icon: FolderGit2 },
     { name: 'Keahlian & Cita-cita', path: '/dashboard/skills', icon: Sparkles },
-    { name: 'Portfolio Builder', path: '/dashboard/builder', icon: Layout }, // <-- Menu baru
   ];
 
   return (

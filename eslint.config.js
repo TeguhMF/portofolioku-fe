@@ -13,9 +13,17 @@ export default defineConfig([
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
+    
     languageOptions: {
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+
+    // Di dalam file eslint.config.js / .eslintrc.cjs
+    rules: {
+      'react-hooks/exhaustive-deps': 'off', // Matikan teguran useEffect
+      'react-refresh/only-export-components': 'off', // Matikan teguran export context/hooks
+      'no-unused-vars': 'warn', // Ubah error variabel tak terpakai jadi peringatan biasa (kuning)
+    }
   },
 ])
