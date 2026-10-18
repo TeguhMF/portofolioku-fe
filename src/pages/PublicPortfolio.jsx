@@ -58,7 +58,7 @@ const PublicPortfolio = () => {
       </div>
 
       <div className="w-full">
-        {/* Header Banner Publik yang Terhubung Langsung */}
+        {/* Header Banner Publik */}
         <header className="bg-gradient-to-r from-[#202772] via-[#262c7d] to-[#12163b] text-white py-14 px-8 sm:px-16 shadow-lg print:hidden">
           <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-8">
             
@@ -120,17 +120,6 @@ const PublicPortfolio = () => {
                   </a>
                 )}
 
-                {socialLinks.github && (
-                  <a
-                    href={`https://github.com/${socialLinks.github}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-all border border-white/20"
-                  >
-                    <Globe className="w-3.5 h-3.5" /> GitHub
-                  </a>
-                )}
-
                 {socialLinks.instagram && (
                   <a
                     href={`https://instagram.com/${socialLinks.instagram}`}
@@ -162,10 +151,10 @@ const PublicPortfolio = () => {
               </div>
 
               <div className="text-xs text-slate-600 space-y-1 sm:text-right">
-                {profile.phone_whatsapp && <p>📱 WhatsApp: {profile.phone_whatsapp}</p>}
-                {socialLinks.linkedin && <p>💼 LinkedIn: {socialLinks.linkedin}</p>}
-                {socialLinks.github && <p>💻 GitHub: {socialLinks.github}</p>}
-                {socialLinks.instagram && <p>📸 Instagram: {socialLinks.instagram}</p>}
+                {profile.phone_whatsapp && <p> WhatsApp: {profile.phone_whatsapp}</p>}
+                {socialLinks.linkedin && <p> LinkedIn: {socialLinks.linkedin}</p>}
+                {socialLinks.github && <p> GitHub: {socialLinks.github}</p>}
+                {socialLinks.instagram && <p> Instagram: {socialLinks.instagram}</p>}
               </div>
             </div>
 
@@ -182,9 +171,24 @@ const PublicPortfolio = () => {
               <div>
                 <h2 className="text-xs font-extrabold uppercase tracking-widest text-blue-800 border-b-2 border-blue-600 pb-1 mb-3">Keahlian & Kompetensi</h2>
                 <div className="flex flex-wrap gap-2">
-                  {skills.map((item) => (
-                    <span key={item.id} className="px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200">
-                      {item.skill_name} <span className="text-[10px] text-slate-500 font-normal">({item.category === 'hard_skill' ? 'Hard Skill' : 'Soft Skill'})</span>
+                  {skills.map((item, index) => (
+                    <span key={item.id || index} className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200 flex items-center gap-1.5">
+                      {/* Menggunakan item.name atau item.skill_name sebagai fallback */}
+                      <span className="font-bold">{item.name || item.skill_name}</span> 
+                      
+                      {/* Kategori */}
+                      {item.category && (
+                        <span className="text-[10px] text-slate-500 font-normal">
+                          ({item.category})
+                        </span>
+                      )}
+
+                      {/* Level */}
+                      {item.level && (
+                        <span className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 font-bold rounded border border-blue-100/80">
+                          {item.level}
+                        </span>
+                      )}
                     </span>
                   ))}
                 </div>
@@ -220,7 +224,9 @@ const PublicPortfolio = () => {
                         <h3 className="text-xs font-bold text-slate-800">{item.role}</h3>
                         <p className="text-[11px] text-slate-600">{item.organization_name}</p>
                       </div>
-                      <span className="text-xs font-bold text-slate-500">{item.start_year} - {item.end_year || 'Sekarang'}</span>
+                      <span className="text-xs font-bold text-slate-500">
+                        {item.period || `${item.start_year || ''} - ${item.end_year || 'Sekarang'}`}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -238,8 +244,8 @@ const PublicPortfolio = () => {
                         <h3 className="text-xs font-bold text-slate-800">{item.title}</h3>
                         <p className="text-[11px] text-slate-600 capitalize">Kategori: {item.category}</p>
                       </div>
-                      {item.project_url && (
-                        <span className="text-[11px] text-blue-600 font-mono">{item.project_url}</span>
+                      {(item.project_url || item.file_url) && (
+                        <span className="text-[11px] text-blue-600 font-mono">{item.project_url || item.file_url}</span>
                       )}
                     </div>
                   ))}

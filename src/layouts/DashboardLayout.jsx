@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { usePortfolio } from '../context/PortfolioContext'; // 1. Import Portfolio Context
 import { 
   GraduationCap, 
   LayoutDashboard, 
@@ -13,26 +14,54 @@ import {
   Menu, 
   X,
   Eye,
-  ChevronDown,
-  Layout // <-- Diimpor untuk ikon Portfolio Builder
+  ChevronDown
 } from 'lucide-react';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { portfolioData } = usePortfolio(); // 2. Ambil data profil dinamis dari Context
+  
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const user = {
-    name: 'Muhammad Fajar',
-    username: 'fajar12',
-    school: 'SMAN 1 Jakarta',
-    avatar: null
+  // Ambil data user dasar dari localStorage
+  const [storedUser] = useState(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  // Helper slugify nama jika username belum ada
+  const slugify = (text) => {
+    return String(text || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, '')
+      .replace(/--+/g, '-');
+  };
+
+  // 3. Gabungkan data profil dinamis dari Context & localStorage
+  const profile = portfolioData?.profile || {};
+  const name = profile.name || storedUser?.name || storedUser?.full_name || 'Nama Siswa';
+  const username = profile.username || storedUser?.username || slugify(name) || 'user';
+  const school = profile.school_name || storedUser?.school_name || storedUser?.school || 'Siswa SMA/SMK';
+
+  const user = { name, username, school };
+
+  // Helper fungsi membuat inisial nama
+  const getInitials = (str) => {
+    if (!str) return 'U';
+    const parts = str.trim().split(' ').filter(Boolean);
+    if (parts.length === 0) return 'U';
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
   };
 
   const handleLogout = () => {
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('user');
     navigate('/login');
   };
 
@@ -69,9 +98,10 @@ const DashboardLayout = () => {
           </span>
         </div>
 
+        {/* User Info Sidebar */}
         <div className="p-4 mx-3 my-3 bg-slate-50 border border-slate-200/80 rounded-2xl flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
-            {user.name.split(' ').map(n => n[0]).join('')}
+          <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-sm flex-shrink-0">
+            {getInitials(user.name)}
           </div>
           <div className="overflow-hidden">
             <h4 className="text-xs font-bold text-slate-800 truncate">{user.name}</h4>
@@ -101,6 +131,7 @@ const DashboardLayout = () => {
         </nav>
 
         <div className="p-3 border-t border-slate-100 space-y-2">
+          {/* Tautan Portofolio Publik Dinamis */}
           <a
             href={`/p/${user.username}`}
             target="_blank"
@@ -132,6 +163,7 @@ const DashboardLayout = () => {
         />
       )}
 
+      {/* MOBILE SIDEBAR */}
       <div className={`fixed top-0 left-0 bottom-0 w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
@@ -141,6 +173,17 @@ const DashboardLayout = () => {
             <X className="w-6 h-6" />
           </button>
         </div>
+
+        <div className="p-4 mx-3 my-3 bg-slate-50 border border-slate-200/80 rounded-2xl flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-sm flex-shrink-0">
+            {getInitials(user.name)}
+          </div>
+          <div className="overflow-hidden">
+            <h4 className="text-xs font-bold text-slate-800 truncate">{user.name}</h4>
+            <p className="text-[10px] text-slate-500 truncate">{user.school}</p>
+          </div>
+        </div>
+
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {navigation.map((item) => {
             const Icon = item.icon;
@@ -180,8 +223,8 @@ const DashboardLayout = () => {
               onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
               className="flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-1.5 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer border border-slate-200/60 bg-white"
             >
-              <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs shadow-sm">
-                {user.name.split(' ').map(n => n[0]).join('')}
+              <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs shadow-sm flex-shrink-0">
+                {getInitials(user.name)}
               </div>
               <span className="hidden sm:inline text-xs font-bold text-slate-700">{user.name}</span>
               <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${isProfileDropdownOpen ? 'rotate-180' : ''}`} />
