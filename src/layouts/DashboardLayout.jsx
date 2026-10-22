@@ -81,7 +81,7 @@ const DashboardLayout = () => {
     { name: 'Organisasi & Ekskul', path: '/dashboard/organizations', icon: Briefcase },
     { name: 'Prestasi & Sertifikat', path: '/dashboard/achievements', icon: Award },
     { name: 'Karya & Project', path: '/dashboard/projects', icon: FolderGit2 },
-    { name: 'Keahlian & Cita-cita', path: '/dashboard/skills', icon: Sparkles },
+    { name: 'Keahlian', path: '/dashboard/skills', icon: Sparkles },
   ];
 
   return (

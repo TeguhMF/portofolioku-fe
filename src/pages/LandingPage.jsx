@@ -11,11 +11,41 @@ import {
   GraduationCap, 
   Menu, 
   X, 
-  ExternalLink 
+  ChevronDown,
+  HelpCircle
 } from 'lucide-react';
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState(null);
+
+  // Masukkan URL link atau lokasi file gambar hero di sini
+  const [heroImageUrl, setHeroImageUrl] = useState(
+    'src/assets/kids.png'
+  );
+
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
+  const faqs = [
+    {
+      q: 'Apakah pembuat portofolio ini benar-benar gratis?',
+      a: 'Ya, 100% gratis untuk seluruh siswa SMA/SMK/MA se-Indonesia tanpa biaya tersembunyi.'
+    },
+    {
+      q: 'Bagaimana cara kerja fitur Unduh CV ATS?',
+      a: 'Data yang kamu masukkan di dashboard akan dikonversi otomatis menjadi format CV ATS standar industri saat dicetak/diunduh. Tampilan web tetap interaktif, sedangkan hasil cetaknya bersih dan rapi khusus lamaran/beasiswa.'
+    },
+    {
+      q: 'Apakah saya bisa mengunggah bukti foto sertifikat dan proyek?',
+      a: 'Tentu saja! Kamu bisa menambahkan foto karya, gambar sertifikat, dan tautan langsung agar portofoliomu lebih valid dan terpercaya.'
+    },
+    {
+      q: 'Apakah link portofolio publik saya bisa diakses siapa saja?',
+      a: 'Ya, kamu akan mendapatkan link unik (misal: portofolioku.com/p/username) yang bisa langsung kamu bagikan ke recruiter, universitas, atau dipajang di bio media sosial.'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-blue-500 selection:text-white">
@@ -39,6 +69,9 @@ const LandingPage = () => {
               </a>
               <a href="#cara-kerja" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
                 Cara Kerja
+              </a>
+              <a href="#faq" className="text-sm font-medium text-slate-600 hover:text-blue-700 transition-colors">
+                FAQ
               </a>
             </div>
 
@@ -86,6 +119,13 @@ const LandingPage = () => {
               className="block px-3 py-2 text-base font-medium text-slate-600 hover:text-blue-700"
             >
               Cara Kerja
+            </a>
+            <a 
+              href="#faq" 
+              onClick={() => setIsMenuOpen(false)}
+              className="block px-3 py-2 text-base font-medium text-slate-600 hover:text-blue-700"
+            >
+              FAQ
             </a>
             <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
               <Link 
@@ -147,76 +187,22 @@ const LandingPage = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>Export Resume PDF</span>
+                  <span>Export CV ATS Resmi (PDF)</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Interactive Mockup Card */}
+            {/* Right Side - Gambar Custom Showcase */}
             <div className="lg:col-span-5 relative">
-              {/* Decorative Blur Background */}
               <div className="absolute -top-10 -left-10 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl"></div>
               <div className="absolute -bottom-10 -right-10 w-72 h-72 bg-emerald-400/20 rounded-full blur-3xl"></div>
 
-              {/* Card Container */}
-              <div className="relative bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 transition-all hover:shadow-blue-500/10">
-                {/* Header Mockup */}
-                <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xl font-bold shadow-md">
-                    MF
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800">Muhammad Fajar</h3>
-                    <p className="text-xs text-slate-500">Siswa XII IPA 1 • SMAN 1 Jakarta</p>
-                    <span className="inline-block mt-1 px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-semibold border border-emerald-200">
-                      Target: Computer Science / PTN
-                    </span>
-                  </div>
-                </div>
-
-                {/* Content Mockup Items */}
-                <div className="py-5 space-y-4">
-                  {/* Prestasi */}
-                  <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <div className="p-2 rounded-lg bg-amber-100 text-amber-600">
-                      <Award className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-slate-800">Juara 1 Lomba Karya Tulis Ilmiah</h4>
-                      <p className="text-[11px] text-slate-500">Tingkat Nasional • 2026</p>
-                    </div>
-                  </div>
-
-                  {/* Organisasi */}
-                  <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
-                      <Briefcase className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-slate-800">Ketua Sekbid IPTEK OSIS</h4>
-                      <p className="text-[11px] text-slate-500">Masa Jabatan 2025 - 2026</p>
-                    </div>
-                  </div>
-
-                  {/* Project */}
-                  <div className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                    <div className="p-2 rounded-lg bg-emerald-100 text-emerald-600">
-                      <FolderGit2 className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-slate-800">Web Aplikasi Absensi Ekskul</h4>
-                      <p className="text-[11px] text-slate-500">Project Tugas Akhir Pemrograman</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer Link Mockup */}
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                  <span>URL Publik:</span>
-                  <span className="font-mono text-blue-700 font-semibold flex items-center gap-1">
-                    portofolioku.com/p/fajar <ExternalLink className="w-3 h-3" />
-                  </span>
-                </div>
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200/80 shadow-2xl bg-white p-2 transform hover:scale-[1.01] transition-all">
+                <img 
+                  src={heroImageUrl} 
+                  alt="Pratinjau Portofolio Siswa" 
+                  className="w-full h-auto rounded-xl object-cover"
+                />
               </div>
             </div>
 
@@ -230,12 +216,11 @@ const LandingPage = () => {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-xs font-bold uppercase tracking-wider text-blue-700 mb-2">Modul & Fitur Lengkap</h2>
             <p className="text-3xl font-bold text-slate-900 sm:text-4xl">
-              Semua yang Dibutuhkan Siswa SMA dalam Satu Tempat
+              Semua yang Dibutuhkan dalam Satu Tempat
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Card 1 */}
             <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition-all hover:shadow-xl hover:shadow-blue-500/5 group">
               <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-6 group-hover:bg-blue-700 group-hover:text-white transition-colors">
                 <GraduationCap className="w-6 h-6" />
@@ -246,18 +231,16 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Card 2 */}
             <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-amber-200 transition-all hover:shadow-xl hover:shadow-amber-500/5 group">
               <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-6 group-hover:bg-amber-600 group-hover:text-white transition-colors">
                 <Award className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-3">Prestasi & Sertifikat</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Unggah sertifikat prestasi tingkat sekolah hingga internasional dengan pratinjau yang jelas.
+                Unggah sertifikat prestasi tingkat sekolah hingga internasional dengan pratinjau foto visual yang terverifikasi.
               </p>
             </div>
 
-            {/* Card 3 */}
             <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition-all hover:shadow-xl hover:shadow-emerald-500/5 group">
               <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                 <Briefcase className="w-6 h-6" />
@@ -268,7 +251,6 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Card 4 */}
             <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-purple-200 transition-all hover:shadow-xl hover:shadow-purple-500/5 group">
               <div className="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors">
                 <FolderGit2 className="w-6 h-6" />
@@ -279,7 +261,6 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Card 5 */}
             <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all hover:shadow-xl hover:shadow-indigo-500/5 group">
               <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-6 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                 <Sparkles className="w-6 h-6" />
@@ -290,14 +271,13 @@ const LandingPage = () => {
               </p>
             </div>
 
-            {/* Card 6 */}
             <div className="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition-all hover:shadow-xl hover:shadow-blue-500/5 group">
               <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-6 group-hover:bg-blue-700 group-hover:text-white transition-colors">
                 <ShieldCheck className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-3">Pratinjau Langsung</h3>
+              <h3 className="text-xl font-bold text-slate-800 mb-3">Cetak CV ATS Otomatis</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Isi formulir di sebelah kiri dan lihat perubahan portofoliomu secara langsung di sebelah kanan.
+                Ubah seluruh data portofoliomu menjadi lembar CV ATS standar lamaran kerja & beasiswa dalam sekali klik.
               </p>
             </div>
           </div>
@@ -305,7 +285,7 @@ const LandingPage = () => {
       </section>
 
       {/* ------------------ HOW IT WORKS ------------------ */}
-      <section id="cara-kerja" className="py-20 bg-white border-t border-slate-200">
+      <section id="cara-kerja" className="py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-xs font-bold uppercase tracking-wider text-blue-700 mb-2">Langkah Praktis</h2>
@@ -339,11 +319,46 @@ const LandingPage = () => {
               <div className="w-14 h-14 rounded-2xl bg-blue-700 text-white text-xl font-bold flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-600/20">
                 3
               </div>
-              <h3 className="text-lg font-bold text-slate-800 mb-2">Pilih Template & Bagikan</h3>
+              <h3 className="text-lg font-bold text-slate-800 mb-2">Bagikan & Unduh CV</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Pilih tampilan favoritmu, lalu bagikan link portofoliomu.
+                Bagikan link portofoliomu ke recruiter/kampus dan unduh CV ATS berfotomu.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------ FAQ SECTION ------------------ */}
+      <section id="faq" className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold mb-3">
+              <HelpCircle className="w-4 h-4" />
+              <span>Pertanyaan Populer</span>
+            </div>
+            <h2 className="text-3xl font-bold text-slate-900">Sering Ditanyakan</h2>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => (
+              <div 
+                key={idx} 
+                className="border border-slate-200 rounded-2xl overflow-hidden transition-all bg-slate-50/50"
+              >
+                <button
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full p-5 text-left flex justify-between items-center gap-4 focus:outline-none"
+                >
+                  <span className="font-bold text-sm text-slate-800">{faq.q}</span>
+                  <ChevronDown className={`w-5 h-5 text-slate-500 transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
+                </button>
+                {openFaq === idx && (
+                  <div className="px-5 pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>

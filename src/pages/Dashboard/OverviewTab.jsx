@@ -75,7 +75,7 @@ const OverviewTab = () => {
                 <span className="font-semibold text-slate-800">{profile.school_name || '-'}</span>
               </div>
               <div className="flex justify-between items-center text-xs">
-                <span className="text-slate-500">Target Cita-cita:</span>
+                <span className="text-slate-500">Target Karir:</span>
                 <span className="font-semibold text-emerald-600">{profile.career_goal || '-'}</span>
               </div>
             </div>
@@ -233,15 +233,15 @@ const OverviewTab = () => {
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-800">Keahlian & Cita-cita</h3>
-                  <p className="text-[11px] text-slate-500">Hard skill, soft skill, dan target profesi masa depan.</p>
+                  <h3 className="text-sm font-bold text-slate-800">Keahlian</h3>
+                  <p className="text-[11px] text-slate-500">Hard skill, soft skill.</p>
                 </div>
               </div>
             </div>
 
             <div className="space-y-3">
               <p className="text-xs font-semibold text-slate-600">
-                Target Karir: <span className="font-bold text-purple-700">{profile.career_goal || 'Belum diisi'}</span>
+                <span className="font-bold text-purple-700">{profile.career_goal || 'Belum diisi'}</span>
               </p>
               {skills.length === 0 ? (
                 <p className="text-xs text-slate-400 italic">Belum ada keahlian ditambahkan.</p>
