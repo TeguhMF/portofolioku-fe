@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { usePortfolio } from '../context/PortfolioContext';
 import { 
   Award, 
@@ -11,11 +12,13 @@ import {
   Share2,
   Download,
   Target,
-  Image as ImageIcon
+  Image as ImageIcon,
+  X
 } from 'lucide-react';
 
 const PublicPortfolio = () => {
   const { portfolioData } = usePortfolio();
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const { profile = {}, achievements = [], organizations = [], projects = [], skills = [] } = portfolioData || {};
   const socialLinks = profile.social_links || {};
@@ -38,6 +41,38 @@ const PublicPortfolio = () => {
 
   return (
     <div>
+      {/* ==========================================
+          MODAL LIGHTBOX GAMBAR (POPUP SAAT DIKLIK)
+         ========================================== */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 print:hidden animate-fade-in"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div 
+            className="relative max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden p-2 shadow-2xl flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-slate-900/80 text-white flex items-center justify-center hover:bg-slate-900 transition-colors cursor-pointer shadow-md"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <img 
+              src={selectedImage.url} 
+              alt={selectedImage.title} 
+              className="max-w-full max-h-[80vh] object-contain rounded-xl"
+            />
+            {selectedImage.title && (
+              <p className="mt-3 mb-1 text-xs font-bold text-slate-700 text-center px-4">
+                {selectedImage.title}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* ==========================================
           1. TAMPILAN WEB DIGITAL (Sembunyi saat Cetak)
          ========================================== */}
@@ -67,8 +102,11 @@ const PublicPortfolio = () => {
           <header className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white py-12 px-6 sm:px-12 shadow-md">
             <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
               
-              {/* Foto Profil / Inisial */}
-              <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center font-bold text-5xl text-white border-2 border-white/20 shadow-2xl shrink-0 overflow-hidden">
+              {/* Foto Profil / Inisial (Bisa Diklik Juga) */}
+              <div 
+                onClick={() => profile.avatar_url && setSelectedImage({ url: profile.avatar_url, title: profile.name })}
+                className={`w-32 h-32 sm:w-36 sm:h-36 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center font-bold text-5xl text-white border-2 border-white/20 shadow-2xl shrink-0 overflow-hidden ${profile.avatar_url ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
+              >
                 {profile.avatar_url ? (
                   <img src={profile.avatar_url} alt={profile.name} className="w-full h-full object-cover" />
                 ) : (
@@ -179,15 +217,24 @@ const PublicPortfolio = () => {
                     return (
                       <div 
                         key={item.id} 
-                        className="rounded-2xl border border-slate-200/80 overflow-hidden bg-slate-50/50 flex flex-col justify-between group shadow-sm"
+                        className="rounded-2xl border border-slate-200/80 overflow-hidden bg-slate-50/50 flex flex-col justify-between group shadow-sm hover:border-blue-300 transition-all"
                       >
-                        <div className="w-full h-44 bg-slate-200 relative overflow-hidden flex items-center justify-center">
+                        {/* Area Gambar Project yang Dapat Diklik */}
+                        <div 
+                          onClick={() => mediaUrl && setSelectedImage({ url: mediaUrl, title: item.title })}
+                          className={`w-full h-44 bg-slate-200 relative overflow-hidden flex items-center justify-center ${mediaUrl ? 'cursor-pointer group' : ''}`}
+                        >
                           {mediaUrl ? (
-                            <img 
-                              src={mediaUrl} 
-                              alt={item.title} 
-                              className="w-full h-full object-cover"
-                            />
+                            <>
+                              <img 
+                                src={mediaUrl} 
+                                alt={item.title} 
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                              <div className="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold gap-1.5">
+                                <span>Klik untuk memperbesar</span>
+                              </div>
+                            </>
                           ) : (
                             <div className="flex flex-col items-center gap-2 text-slate-400">
                               <ImageIcon className="w-8 h-8" />
@@ -195,7 +242,7 @@ const PublicPortfolio = () => {
                             </div>
                           )}
                           {item.category && (
-                            <span className="absolute top-3 right-3 px-2.5 py-1 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold rounded-lg">
+                            <span className="absolute top-3 right-3 px-2.5 py-1 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold rounded-lg z-10">
                               {item.category}
                             </span>
                           )}
@@ -248,7 +295,12 @@ const PublicPortfolio = () => {
                       const certUrl = item.certificate_url || item.file_url || item.photo_url || item.image_url;
                       return (
                         <div key={item.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/70 flex gap-4 items-start">
-                          <div className="w-16 h-16 rounded-xl bg-slate-200 shrink-0 overflow-hidden flex items-center justify-center border border-slate-300">
+                          {/* Area Gambar Sertifikat yang Dapat Diklik */}
+                          <div 
+                            onClick={() => certUrl && setSelectedImage({ url: certUrl, title: item.title })}
+                            className={`w-16 h-16 rounded-xl bg-slate-200 shrink-0 overflow-hidden flex items-center justify-center border border-slate-300 ${certUrl ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+                            title={certUrl ? "Klik untuk memperbesar sertifikat" : ""}
+                          >
                             {certUrl ? (
                               <img src={certUrl} alt={item.title} className="w-full h-full object-cover" />
                             ) : (
@@ -307,51 +359,50 @@ const PublicPortfolio = () => {
         </footer>
       </div>
 
-
       {/* ==========================================
           2. TAMPILAN KHUSUS CETAK PDF / CV ATS (Hanya Muncul Saat Print)
          ========================================== */}
-        <div className="hidden print:block bg-white text-slate-900 font-sans p-2 text-xs leading-relaxed max-w-3xl mx-auto">
-          
-          {/* FORCE COLOR PRINT STYLE */}
-          <style>{`
-            @media print {
-              * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-              }
-              img {
-                filter: none !important;
-                -webkit-filter: none !important;
-              }
+      <div className="hidden print:block bg-white text-slate-900 font-sans p-2 text-xs leading-relaxed max-w-3xl mx-auto">
+        
+        {/* FORCE COLOR PRINT STYLE */}
+        <style>{`
+          @media print {
+            * {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
             }
-          `}</style>
+            img {
+              filter: none !important;
+              -webkit-filter: none !important;
+            }
+          }
+        `}</style>
 
-          {/* HEADER ATS */}
-          <div className="border-b-2 border-slate-800 pb-4 mb-4 flex justify-between items-start">
-            <div className="space-y-1">
-              <h1 className="text-2xl font-bold tracking-tight uppercase text-slate-900">{profile.name || 'Nama Lengkap'}</h1>
-              <p className="text-sm font-semibold text-slate-700">{profile.career_goal || 'Siswa SMA/SMK'}</p>
-              <p className="text-xs text-slate-600">{profile.school_name} {profile.grade_level ? `• ${profile.grade_level}` : ''}</p>
-              
-              {/* KONTAK TEKS */}
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-slate-700 pt-1">
-                {profile.phone_whatsapp && <span>WhatsApp: {profile.phone_whatsapp}</span>}
-                {socialLinks.instagram && <span>Instagram: @{socialLinks.instagram}</span>}
-              </div>
+        {/* HEADER ATS */}
+        <div className="border-b-2 border-slate-800 pb-4 mb-4 flex justify-between items-start">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold tracking-tight uppercase text-slate-900">{profile.name || 'Nama Lengkap'}</h1>
+            <p className="text-sm font-semibold text-slate-700">{profile.career_goal || 'Siswa SMA/SMK'}</p>
+            <p className="text-xs text-slate-600">{profile.school_name} {profile.grade_level ? `• ${profile.grade_level}` : ''}</p>
+            
+            {/* KONTAK TEKS */}
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-slate-700 pt-1">
+              {profile.phone_whatsapp && <span>WhatsApp: {profile.phone_whatsapp}</span>}
+              {socialLinks.instagram && <span>Instagram: @{socialLinks.instagram}</span>}
             </div>
-
-            {/* FOTO ATS BERWARNA */}
-            {profile.avatar_url && (
-              <div className="w-20 h-24 border border-slate-300 overflow-hidden rounded shrink-0">
-                <img 
-                  src={profile.avatar_url} 
-                  alt={profile.name} 
-                  className="w-full h-full object-cover" 
-                />
-              </div>
-            )}
           </div>
+
+          {/* FOTO ATS BERWARNA */}
+          {profile.avatar_url && (
+            <div className="w-20 h-24 border border-slate-300 overflow-hidden rounded shrink-0">
+              <img 
+                src={profile.avatar_url} 
+                alt={profile.name} 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+          )}
+        </div>
 
         {/* RINGKASAN PROFIL */}
         {profile.bio && (
