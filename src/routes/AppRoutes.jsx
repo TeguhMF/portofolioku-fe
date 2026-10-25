@@ -12,6 +12,7 @@ import AchievementsTab from '../pages/Dashboard/AchievementsTab';
 import ProjectsTab from '../pages/Dashboard/ProjectsTab';
 import SkillsTab from '../pages/Dashboard/SkillsTab';
 import PublicPortfolio from '../pages/PublicPortfolio';
+import ResetPassword from '../pages/ResetPassword';
 
 const AppRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoutes = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/p/:username" element={<PublicPortfolio />} />
 
       {/* Protected Dashboard Routes */}
@@ -34,10 +36,8 @@ const AppRoutes = () => {
         <Route element={<DashboardContainer />}>
           <Route index element={<OverviewTab />} />
           <Route path="overview" element={<OverviewTab />} />
-          {/* rute lainnya... */}
         </Route>
         <Route element={<DashboardContainer />}>
-          <Route index element={<ProfileTab />} />
           <Route path="profile" element={<ProfileTab />} />
           <Route path="organizations" element={<OrganizationsTab />} />
           <Route path="achievements" element={<AchievementsTab />} />
