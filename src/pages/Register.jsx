@@ -140,7 +140,7 @@ const Register = () => {
                 <input 
                   type="email" 
                   required 
-                  placeholder="teguh@gmail.com"
+                  placeholder="email anda123@gmail.com" //ubah place holder "dika"//
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   className="w-full pl-9 pr-3 py-2 text-xs border-b border-slate-200 focus:border-blue-600 focus:outline-none transition-colors bg-transparent"
