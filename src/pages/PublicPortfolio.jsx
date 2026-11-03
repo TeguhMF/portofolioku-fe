@@ -355,7 +355,6 @@ const PublicPortfolio = () => {
 
         {/* FOOTER WEB */}
         <footer className="py-8 text-center text-xs text-slate-500 border-t border-slate-200 bg-white">
-          <p>Portofolio digital resmi disusun melalui <span className="font-bold text-blue-600">Portofolioku Student Portal</span></p>
         </footer>
       </div>
 

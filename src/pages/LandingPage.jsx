@@ -154,7 +154,7 @@ const LandingPage = () => {
             <div className="lg:col-span-7 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-6">
                 <Sparkles className="w-4 h-4 text-emerald-500" />
-                <span>Khusus Siswa SMA / SMK / MA Se-Indonesia</span>
+                <span>Khusus Siswa siswi SMA/SMK/MA</span>
               </div>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
@@ -277,7 +277,7 @@ const LandingPage = () => {
               </div>
               <h3 className="text-xl font-bold text-slate-800 mb-3">Cetak CV ATS Otomatis</h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Ubah seluruh data portofoliomu menjadi lembar CV ATS standar lamaran kerja & beasiswa dalam sekali klik.
+                Ubah seluruh data portofoliomu menjadi lembar CV ATS standar lamaran kerja dalam sekali klik.
               </p>
             </div>
           </div>
@@ -374,7 +374,7 @@ const LandingPage = () => {
               <span className="text-lg font-bold text-white">Portofolioku</span>
             </div>
             <p className="text-xs text-slate-500 text-center md:text-right">
-              Platform Portofolio Digital Khusus Siswa SMA / SMK / MA Indonesia.
+              Platform Portofolio Digital Khusus Siswa SMA / SMK / MA.
             </p>
           </div>
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
