@@ -21,7 +21,7 @@ const LandingPage = () => {
 
   // Masukkan URL link atau lokasi file gambar hero di sini
   const [heroImageUrl, setHeroImageUrl] = useState(
-    'src/assets/kids.png'
+    'src/assets/headerimage.png'
   );
 
   const toggleFaq = (index) => {

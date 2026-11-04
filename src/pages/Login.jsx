@@ -5,12 +5,11 @@ import { usePortfolio } from '../context/PortfolioContext';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = usePortfolio(); // Menggunakan fungsi login dari Context
+  const { login } = usePortfolio();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // State Khusus Modal Lupa Kata Sandi
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetSubmitting, setResetSubmitting] = useState(false);
@@ -22,7 +21,6 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Memanggil login() agar state isAuthenticated di PortfolioContext berubah jadi true
       await login(formData);
       navigate('/dashboard');
     } catch (err) {
@@ -38,10 +36,6 @@ const Login = () => {
     setResetStatus({ type: '', message: '' });
 
     try {
-      // Panggil endpoint API Laravel pemulihan kata sandi jika sudah tersedia:
-      // await axios.post('/api/forgot-password', { email: resetEmail });
-
-      // Simulasi pengiriman tautan reset
       await new Promise((resolve) => setTimeout(resolve, 1200));
 
       setResetStatus({

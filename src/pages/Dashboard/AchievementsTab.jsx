@@ -34,7 +34,6 @@ const AchievementsTab = () => {
 
     setLoading(true);
     try {
-      // Menyiapkan payload data lengkap untuk disajikan ke API Laravel
       const payload = {
         title: form.title,
         issuer: `${form.rank || 'Juara'} (Tingkat ${form.level || 'Nasional'})`,
