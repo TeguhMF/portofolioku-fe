@@ -4,7 +4,7 @@ import LandingPage from '../pages/LandingPage';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import OverviewTab from '../pages/dashboard/OverviewTab';
-import DashboardLayout from '../layouts/dashboardLayout';
+import DashboardLayout from '../layouts/DashboardLayout';
 import DashboardContainer from '../pages/dashboard/DashboardContainer';
 import ProfileTab from '../pages/dashboard/ProfileTab';
 import OrganizationsTab from '../pages/dashboard/OrganizationsTab';
