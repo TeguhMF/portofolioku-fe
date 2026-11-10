@@ -154,7 +154,7 @@ const LandingPage = () => {
             <div className="lg:col-span-7 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-6">
                 <Sparkles className="w-4 h-4 text-emerald-500" />
-                <span>Khusus Siswa siswi SMA/SMK/MA</span>
+                <span>Khusus Siswa siswi MAN 5 BOGOR</span>
               </div>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
@@ -374,11 +374,11 @@ const LandingPage = () => {
               <span className="text-lg font-bold text-white">Portofolioku</span>
             </div>
             <p className="text-xs text-slate-500 text-center md:text-right">
-              Platform Portofolio Digital Khusus Siswa SMA / SMK / MA.
+              Platform Portofolio Digital Khusus Siswa Siswi MAN 5 BOGOR.
             </p>
           </div>
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-            <p>© {new Date().getFullYear()} Portofolioku. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Portofolioku MAN 5 BOGOR. All rights reserved.</p>
             <div className="flex gap-6">
               <a href="#" className="hover:text-slate-300 transition-colors">Kebijakan Privasi</a>
               <a href="#" className="hover:text-slate-300 transition-colors">Syarat & Ketentuan</a>

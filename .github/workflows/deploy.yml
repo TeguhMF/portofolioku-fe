@@ -1,0 +1,28 @@
+name: Deploy React Frontend to cPanel
+
+on:
+  push:
+    branches:
+      - main # ganti ke 'master' jika nama branch utama kamu master
+
+jobs:
+  web-deploy:
+    name: Build and Deploy Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies & Build
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload to cPanel via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/ # ganti ke ./build/ jika hasil npm run build kamu keluar di folder 'build'
+          server-dir: ./

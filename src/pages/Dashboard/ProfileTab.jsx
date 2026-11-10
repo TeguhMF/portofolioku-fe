@@ -210,7 +210,7 @@ const ProfileTab = () => {
               name="school_name"
               value={formData.school_name || ''}
               onChange={handleChange}
-              placeholder="SMAN 5 Depok / MAN 5 Bogor"
+              placeholder="MAN 5 Bogor"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
