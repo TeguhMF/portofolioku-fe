@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePortfolio } from '../context/PortfolioContext';
+import LoadingModal from '../components/LoadingModal';
 import { 
   Award, 
   Briefcase, 
@@ -17,8 +18,37 @@ import {
 } from 'lucide-react';
 
 const PublicPortfolio = () => {
-  const { portfolioData } = usePortfolio();
+  // 1. Extract data & loading status dari Context
+  const { portfolioData, loading } = usePortfolio();
+
+  // 2. Deklarasi Semua State (Wajib di Atas useEffect)
   const [selectedImage, setSelectedImage] = useState(null);
+  const [progress, setProgress] = useState(10);
+  const [showModal, setShowModal] = useState(true);
+
+  // 3. Efek Animasi Progress Bar Loading saat Data sedang Diambil
+  useEffect(() => {
+    let interval;
+    if (loading) {
+      setShowModal(true);
+      setProgress(10);
+      
+      // Simulasi persentase berjalan dari 10% ke 90%
+      interval = setInterval(() => {
+        setProgress((prev) => (prev >= 90 ? 90 : prev + 10));
+      }, 250);
+    } else {
+      // Ketika loading selesai, set 100% lalu sembunyikan modal
+      setProgress(100);
+      const timer = setTimeout(() => {
+        setShowModal(false);
+      }, 400);
+
+      return () => clearTimeout(timer);
+    }
+
+    return () => clearInterval(interval);
+  }, [loading]);
 
   const { profile = {}, achievements = [], organizations = [], projects = [], skills = [] } = portfolioData || {};
   const socialLinks = profile.social_links || {};
@@ -41,6 +71,11 @@ const PublicPortfolio = () => {
 
   return (
     <div>
+      {/* ==========================================
+          0. POP-UP LOADING MODAL (PENGATASI DELAY)
+         ========================================== */}
+      <LoadingModal isOpen={showModal} progress={progress} />
+
       {/* ==========================================
           MODAL LIGHTBOX GAMBAR (POPUP SAAT DIKLIK)
          ========================================== */}
@@ -102,7 +137,7 @@ const PublicPortfolio = () => {
           <header className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white py-12 px-6 sm:px-12 shadow-md">
             <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
               
-              {/* Foto Profil / Inisial (Bisa Diklik Juga) */}
+              {/* Foto Profil / Inisial (Bisa Diklik) */}
               <div 
                 onClick={() => profile.avatar_url && setSelectedImage({ url: profile.avatar_url, title: profile.name })}
                 className={`w-32 h-32 sm:w-36 sm:h-36 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center font-bold text-5xl text-white border-2 border-white/20 shadow-2xl shrink-0 overflow-hidden ${profile.avatar_url ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}

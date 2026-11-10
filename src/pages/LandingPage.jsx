@@ -154,7 +154,7 @@ const LandingPage = () => {
             <div className="lg:col-span-7 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-6">
                 <Sparkles className="w-4 h-4 text-emerald-500" />
-                <span>Khusus Siswa siswi MAN 5 BOGOR</span>
+                <span>Khusus Siswa Siswi MAN 5 BOGOR</span>
               </div>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
