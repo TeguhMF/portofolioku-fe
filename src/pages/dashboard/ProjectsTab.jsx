@@ -63,15 +63,15 @@ const ProjectsTab = () => {
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 font-sans">
       <div className="flex items-center gap-2 pb-4 border-b border-slate-100">
         <Folder className="w-5 h-5 text-indigo-600" />
-        <h2 className="text-base font-bold text-slate-800">Kelola Karya & Tugas Sekolah</h2>
+        <h2 className="text-base font-bold text-slate-800">Kelola Karya</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200/80">
-        <h3 className="text-xs font-bold text-slate-700">Tambah Karya / Tugas Baru</h3>
+        <h3 className="text-xs font-bold text-slate-700">Tambah Karya Baru</h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Judul Karya / Tugas</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Judul Karya</label>
             <input
               type="text"
               required
@@ -113,10 +113,10 @@ const ProjectsTab = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Link Berkas (Google Drive / YouTube / DLL)</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Link Karya</label>
             <input
               type="url"
-              placeholder="https://drive.google.com/file/..."
+              placeholder="https://google.com/file/..."
               value={form.file_url}
               onChange={(e) => setForm({ ...form, file_url: e.target.value })}
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:outline-none bg-white"
@@ -125,7 +125,7 @@ const ProjectsTab = () => {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-600 mb-1">Deskripsi Singkat Karya</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Deskripsi Karya</label>
           <textarea
             rows="2"
             placeholder="Jelaskan secara singkat tentang karya atau tugas yang kamu buat..."

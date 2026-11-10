@@ -398,9 +398,15 @@ const PublicPortfolio = () => {
          ========================================== */}
       <div className="hidden print:block bg-white text-slate-900 font-sans p-2 text-xs leading-relaxed max-w-3xl mx-auto">
         
-        {/* FORCE COLOR PRINT STYLE */}
+        {/* FORCE COLOR PRINT STYLE & HIDE BROWSER HEADER/FOOTER */}
         <style>{`
           @media print {
+            @page {
+              margin: 0;
+            }
+            body {
+              padding: 1.5cm;
+            }
             * {
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;

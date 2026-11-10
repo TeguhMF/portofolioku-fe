@@ -55,18 +55,18 @@ const OrganizationsTab = () => {
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 font-sans">
       <div className="flex items-center gap-2 pb-4 border-b border-slate-100">
         <Users className="w-5 h-5 text-blue-600" />
-        <h2 className="text-base font-bold text-slate-800">Kelola Pengalaman Organisasi</h2>
+        <h2 className="text-base font-bold text-slate-800">Pengalaman Organisasi</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200/80">
-        <h3 className="text-xs font-bold text-slate-700">Tambah Organisasi Baru</h3>
+        <h3 className="text-xs font-bold text-slate-700">Tambah Organisasi</h3>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Organisasi / Komunitas</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Organisasi / Ekstrakurikuler</label>
           <input
             type="text"
             required
-            placeholder="Contoh: OSIS SMAN 5 Depok / Himpunan Mahasiswa"
+            placeholder="Contoh: OSIS"
             value={form.organization_name}
             onChange={(e) => setForm({ ...form, organization_name: e.target.value })}
             className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white"
@@ -99,7 +99,7 @@ const OrganizationsTab = () => {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-600 mb-1">Deskripsi Kegiatan (Opsional)</label>
+          <label className="block text-xs font-semibold text-slate-600 mb-1">Deskripsi</label>
           <textarea
             rows="2"
             placeholder="Tuliskan tugas utama atau pencapaian selama berorganisasi..."

@@ -204,7 +204,7 @@ const ProfileTab = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Nama Sekolah / Instansi</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Sekolah</label>
             <input
               type="text"
               name="school_name"
@@ -222,25 +222,25 @@ const ProfileTab = () => {
               name="grade_level"
               value={formData.grade_level || ''}
               onChange={handleChange}
-              placeholder="Contoh: Kelas XII IPA 1"
+              placeholder="Contoh: Kelas 10.1"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Target Cita-cita / Karir</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Target Karir</label>
             <input
               type="text"
               name="career_goal"
               value={formData.career_goal || ''}
               onChange={handleChange}
-              placeholder="Contoh: Software Engineer"
+              placeholder="Contoh: Engineer"
               className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">Nomor WhatsApp / HP</label>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Nomor WhatsApp</label>
             <input
               type="text"
               name="phone_whatsapp"
@@ -262,26 +262,6 @@ const ProfileTab = () => {
             placeholder="Tuliskan deskripsi diri Anda..."
             className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
           ></textarea>
-        </div>
-
-        {/* Media Sosial */}
-        <div className="pt-2">
-          <h3 className="text-xs font-bold text-slate-700 mb-3 flex items-center gap-1.5">
-            <Globe className="w-4 h-4 text-blue-600" /> Tautan Media Sosial
-          </h3>
-          <div className="max-w-md">
-            <div>
-              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Instagram Username</label>
-              <input
-                type="text"
-                name="social_instagram"
-                placeholder="username_instagram"
-                value={formData.social_links?.instagram || ''}
-                onChange={handleChange}
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-              />
-            </div>
-          </div>
         </div>
 
         <div className="pt-4 flex justify-end">
